@@ -12,12 +12,12 @@ public class Router {
   /**
    * login.
    */
-  public static final String AUTHENTICATION_LOGIN = AUTHENTICATION_ROOT + "/signin";
+  public static final String AUTHENTICATION_SIGN_IN = AUTHENTICATION_ROOT + "/signin";
 
   /**
    * logout.
    */
-  public static final String AUTHENTICATION_LOGOUT = AUTHENTICATION_ROOT + "/signout";
+  public static final String AUTHENTICATION_SIGN_OUT = AUTHENTICATION_ROOT + "/signout";
 
   /**
    * sign up.
