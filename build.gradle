@@ -2,9 +2,6 @@ buildscript {
     ext { springBootVersion = '1.4.1.RELEASE' }
     repositories {
         jcenter()
-        mavenLocal()
-        mavenCentral()
-        maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
     }
     dependencies {
         // for spring boot
@@ -34,7 +31,7 @@ repositories {
         url 'https://repo.spring.io/libs-milestone'
     }
     maven {
-        url 'https://github.com/reactivesw/base/raw/master/lib'
+        url 'https://github.com/reactivesw/commons/raw/master/lib'
     }
 }
 
@@ -77,7 +74,7 @@ dependencies {
     testCompile('org.spockframework:spock-spring:1.0-groovy-2.4')
 
 //    compile project(':base')//depend on base project. for local build.
-    compile("io.reactivesw:base:0.0.1")
+    compile("io.reactivesw:commons:0.0.1")
 }
 
 mainClassName = 'io.reactivesw.authentication.Application'
