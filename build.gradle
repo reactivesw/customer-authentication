@@ -68,7 +68,7 @@ dependencies {
     //spock spring
     testCompile('org.spockframework:spock-spring:1.0-groovy-2.4')
 
-//    compile project(':base')//depend on base project. for local build.
+    compile project(':base')//depend on base project. for local build.
 }
 
 mainClassName = 'io.reactivesw.authentication.Application'
