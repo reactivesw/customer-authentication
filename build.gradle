@@ -10,9 +10,6 @@ buildscript {
         classpath "io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE"
         //for docker build
         classpath('se.transmode.gradle:gradle-docker:1.2')
-
-        // for unit test code coverage  -- need to find a way to put it in its file
-        classpath('com.palantir:jacoco-coverage:0.4.0')
     }
 }
 
