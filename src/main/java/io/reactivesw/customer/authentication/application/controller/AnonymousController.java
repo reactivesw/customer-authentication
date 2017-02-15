@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by umasuo on 17/2/6.
+ * Created by umasuo on 17/2/15.
  */
 @RestController
 public class AnonymousController {
@@ -39,4 +39,3 @@ public class AnonymousController {
 
 
 }
-

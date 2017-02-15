@@ -50,23 +50,6 @@ public class CustomerService {
   /**
    * get customer by customer name.
    *
-   * @param name
-   * @return
-   */
-  public Customer getByCustomerName(String name) {
-    LOGGER.debug("enter: name:{}", name);
-    Customer entity = this.customerRepository.findOneByCustomerName(name);
-    if (entity == null) {
-      LOGGER.debug("customer not exist: name:{}", name);
-      throw new NotExistException("customer not exist. name:" + name);
-    }
-    LOGGER.debug("exit: name: {}, Customer:{}", name, entity);
-    return entity;
-  }
-
-  /**
-   * get customer by customer name.
-   *
    * @param email
    * @return
    */
