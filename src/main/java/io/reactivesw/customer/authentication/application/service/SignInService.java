@@ -35,7 +35,7 @@ public class SignInService {
   private final static Logger LOGGER = LoggerFactory.getLogger(SignInService.class);
 
   /**
-   * JWT(json web token) util
+   * JWT(json web token) update
    */
   @Autowired
   private transient JwtUtil jwtUtil;

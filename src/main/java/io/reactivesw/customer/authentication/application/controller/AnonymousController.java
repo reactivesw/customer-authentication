@@ -20,7 +20,7 @@ public class AnonymousController {
   private final static Logger LOG = LoggerFactory.getLogger(AnonymousController.class);
 
   /**
-   * token util.
+   * token update.
    */
   @Autowired
   private transient JwtUtil jwtUtil;
