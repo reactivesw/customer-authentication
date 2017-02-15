@@ -9,9 +9,9 @@ import io.reactivesw.customer.authentication.domain.model.Customer;
 public class CustomerMapper {
 
   /**
-   * domain model to model for view.
+   * model model to model for view.
    *
-   * @param customer domain model
+   * @param customer model model
    * @return model for view
    */
   public static CustomerView modelToView(Customer customer) {
