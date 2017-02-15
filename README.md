@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/reactivesw/customer-authentication.svg?branch=master)](https://travis-ci.org/reactivesw/customer-authentication)
 # 1, Name
 customer-authentication service
 
