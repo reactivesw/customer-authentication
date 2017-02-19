@@ -76,4 +76,4 @@ dependencies {
     compile("io.reactivesw:commons:0.0.1")
 }
 
-mainClassName = 'io.reactivesw.authentication.Application'
+mainClassName = 'io.reactivesw.customer.authentication.Application'
