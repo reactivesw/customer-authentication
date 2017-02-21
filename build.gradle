@@ -58,6 +58,9 @@ dependencies {
     compile('org.springframework.security:spring-security-crypto')
     compile('com.google.api-client:google-api-client:1.22.0')
 
+    //cglib for Spock
+    testCompile('cglib:cglib-nodep:3.2.4')
+
     //spring boot test
     testCompile('org.springframework.boot:spring-boot-starter-test:1.4.0.RELEASE')
 
