@@ -1,6 +1,8 @@
 # customer-authentication service
 [![Build Status](https://travis-ci.org/reactivesw/customer-authentication.svg?branch=master)](https://travis-ci.org/reactivesw/customer-authentication)
 
+[![codecov](https://codecov.io/gh/reactivesw/customer-authentication/branch/master/graph/badge.svg)](https://codecov.io/gh/reactivesw/customer-authentication)
+
 # 1 Introduction
 customer authentication service, provide: sign in, sign up, sign out
 
