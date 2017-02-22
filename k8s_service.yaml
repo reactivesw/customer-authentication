@@ -7,8 +7,8 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 8083
-    targetPort: 8083
-    nodePort: 30062
+  - port: 80
+    targetPort: 80
+    nodePort: 30004
   selector:
     app: customer-authentication

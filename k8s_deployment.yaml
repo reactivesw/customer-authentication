@@ -16,9 +16,9 @@ spec:
         ports:
         - containerPort: 8083
         env:
+        - name: server_port
+          value: "80"
         - name: spring_datasource_url
-          value: jdbc:postgresql://pg-data/reactivesw
+          value: jdbc:postgresql://pg-data/customer_authentication
         - name: spring_cloud_config_uri
-          value: http://146.148.106.78:8888
-        - name: umasuo_test_uri
-          value: http://customer-info
+          value: http://reactivesw-config
