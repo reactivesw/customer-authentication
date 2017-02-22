@@ -1,15 +1,9 @@
 server:
   port: 8083
 
-logging:
-  level:
-    com.netflix.discovery: 'OFF'
-    org.springframework.cloud: 'DEBUG'
-
-
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/reactivesw
+    url: jdbc:postgresql://pg-data/reactivesw
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
