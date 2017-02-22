@@ -28,4 +28,10 @@ public class TestController {
     String nameFromCustomerInfo = restTemplate.getForObject(uri,String.class);
     return name + "    :    " + nameFromCustomerInfo;
   }
+
+  @ApiOperation("test1")
+  @GetMapping("/test1")
+  public String testConfigServer1(){
+    return name;
+  }
 }

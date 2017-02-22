@@ -19,4 +19,6 @@ spec:
         - name: spring_datasource_url
           value: jdbc:postgresql://pg-data/reactivesw
         - name: spring_cloud_config_uri
-          value: http://reactivesw-config
+          value: http://146.148.106.78:8888
+        - name: umasuo_test_uri
+          value: http://customer-info

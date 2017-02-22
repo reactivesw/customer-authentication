@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/reactivesw
+    url: jdbc:postgresql://104.155.176.8:5432/reactivesw
 #    url: jdbc:postgresql://localhost:5432/reactivesw
     username: postgres
     password: root
@@ -13,8 +13,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-  profiles:
-    active: test
 
 
 jwt:
