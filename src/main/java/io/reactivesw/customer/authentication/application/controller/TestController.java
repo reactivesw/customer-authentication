@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by umasuo on 17/2/21.
@@ -17,9 +18,14 @@ public class TestController {
   @Value("${umasuo.name}")
   private String name;
 
+  @Value("${umasuo.test.uri}")
+  private String uri;
+
+  RestTemplate restTemplate = new RestTemplate();
   @ApiOperation("test")
   @GetMapping("/test")
   public String testConfigServer(){
-    return name;
+    String nameFromCustomerInfo = restTemplate.getForObject(uri,String.class);
+    return name + "    :    " + nameFromCustomerInfo;
   }
 }

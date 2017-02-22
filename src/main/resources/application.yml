@@ -3,7 +3,8 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://pg-data/reactivesw
+    url: jdbc:postgresql://localhost:5432/reactivesw
+#    url: jdbc:postgresql://localhost:5432/reactivesw
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
@@ -18,3 +19,7 @@ spring:
 
 jwt:
   secret: QWERTYUIOKJHGFDS
+
+umasuo:
+  test:
+    uri: http://localhost:8084/test

@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: customer-authentication
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: customer-authentication
+    spec:
+      containers:
+      - name: customer-authentication
+        image: reactivesw/customer-authentication:0.0.1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8083
+        env:
+        - name: spring_datasource_url
+          value: jdbc:postgresql://pg-data/reactivesw
+        - name: spring_cloud_config_uri
+          value: http://reactivesw-config

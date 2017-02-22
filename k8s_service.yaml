@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: customer-authentication
+  labels:
+    name: customer-authentication
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8083
+    targetPort: 8083
+    nodePort: 30062
+  selector:
+    app: customer-authentication
