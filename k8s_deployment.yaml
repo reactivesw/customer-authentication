@@ -22,3 +22,5 @@ spec:
           value: jdbc:postgresql://pg-data/customer_authentication
         - name: spring_cloud_config_uri
           value: http://reactivesw-config
+        - name: umasuo_test_uri
+          value: http://customer-info/test
