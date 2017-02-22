@@ -14,7 +14,7 @@ spec:
         image: reactivesw/customer-authentication:0.0.1
         imagePullPolicy: Always
         ports:
-        - containerPort: 8083
+        - containerPort: 80
         env:
         - name: server_port
           value: "80"
