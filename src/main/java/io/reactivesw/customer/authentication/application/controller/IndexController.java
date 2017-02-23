@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @RestController
 @Configuration
-public class TestController {
+public class IndexController {
 
   @Value("${umasuo.name}")
   private String name;
@@ -22,16 +22,17 @@ public class TestController {
   private String uri;
 
   RestTemplate restTemplate = new RestTemplate();
+
   @ApiOperation("test")
-  @GetMapping("/test")
-  public String testConfigServer(){
-    String nameFromCustomerInfo = restTemplate.getForObject(uri,String.class);
+  @GetMapping("/auth/test")
+  public String testConfigServer() {
+    String nameFromCustomerInfo = restTemplate.getForObject(uri, String.class);
     return name + "    :    " + nameFromCustomerInfo;
   }
 
-  @ApiOperation("test1")
-  @GetMapping("/test1")
-  public String testConfigServer1(){
-    return name;
+  @ApiOperation("/")
+  @GetMapping("/")
+  public String index() {
+    return "Customer-Authentication service, system time: " + System.currentTimeMillis();
   }
 }
