@@ -1,12 +1,9 @@
 package io.reactivesw.customer.authentication.application.controller;
 
-import io.swagger.annotations.ApiOperation;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Created by umasuo on 17/2/21.
@@ -15,24 +12,19 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class IndexController {
 
-  @Value("${umasuo.name}")
-  private String name;
+  /**
+   * service name.
+   */
+  @Value("${spring.controller.name}")
+  private String serviceName;
 
-  @Value("${umasuo.test.uri}")
-  private String uri;
-
-  RestTemplate restTemplate = new RestTemplate();
-
-  @ApiOperation("test")
-  @GetMapping("/auth/test")
-  public String testConfigServer() {
-    String nameFromCustomerInfo = restTemplate.getForObject(uri, String.class);
-    return name + "    :    " + nameFromCustomerInfo;
-  }
-
-  @ApiOperation("/")
+  /**
+   * this api is used for health check.
+   *
+   * @return service name.
+   */
   @GetMapping("/")
   public String index() {
-    return "Customer-Authentication service, system time: " + System.currentTimeMillis();
+    return serviceName + ", system time: " + System.currentTimeMillis();
   }
 }
