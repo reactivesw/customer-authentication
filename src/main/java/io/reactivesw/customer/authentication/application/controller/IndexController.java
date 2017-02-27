@@ -15,7 +15,7 @@ public class IndexController {
   /**
    * service name.
    */
-  @Value("${spring.controller.name}")
+  @Value("${spring.application.name}")
   private String serviceName;
 
   /**
