@@ -14,15 +14,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-
-jwt:
-  secret: QWERTYUIOKJHGFDS
-
-umasuo:
-  test:
-    uri: http://localhost:8084/test
-
-
 io:
   reactivesw:
     message:
