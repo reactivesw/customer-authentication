@@ -29,6 +29,9 @@ repositories {
     maven {
         url 'https://github.com/reactivesw/commons/raw/master/lib'
     }
+    maven {
+        url 'https://github.com/reactivesw/message-client/raw/master/lib'
+    }
 }
 dependencies {
     // spring
@@ -58,6 +61,8 @@ dependencies {
     //security, like password encoder.
     compile('org.springframework.security:spring-security-crypto')
     compile('com.google.api-client:google-api-client:1.22.0')
+    compile('com.google.cloud:google-cloud-pubsub:0.9.3-alpha')
+    compile('com.google.guava:guava:21.0')
 
     //cglib for Spock
     testCompile('cglib:cglib-nodep:3.2.4')
@@ -75,6 +80,8 @@ dependencies {
     testCompile('org.spockframework:spock-spring:1.0-groovy-2.4')
 
     compile("io.reactivesw:commons:0.0.1")
+    compile("io.reactivesw:message-client:0.0.1")
+//    compile project(':message-client')
 }
 
 apply from: 'test_coverage.gradle'
