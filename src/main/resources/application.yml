@@ -22,3 +22,6 @@ io:
       google:
         project:
           id: basic-radius-158809
+
+jwt:
+  secret: QWERTYUIOPASDFGHJKLZXCVBNM

@@ -79,7 +79,8 @@ dependencies {
     //spock spring
     testCompile('org.spockframework:spock-spring:1.0-groovy-2.4')
 
-    compile("io.reactivesw:commons:0.0.1")
+    compile project(':commons')
+//    compile("io.reactivesw:commons:0.0.1")
     compile("io.reactivesw:message-client:0.0.1")
 //    compile project(':message-client')
 }
