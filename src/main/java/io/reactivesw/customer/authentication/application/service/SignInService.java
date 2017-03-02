@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Collections;
 
 /**
@@ -90,7 +91,8 @@ public class SignInService {
       throw new PasswordErrorException("password or email not correct.");
     }
 
-    String token = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId(), 0, "");
+    String token = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId(), 0, new ArrayList<>
+        ());
 
     SignInResult result = new SignInResult(CustomerMapper.modelToView(customer), token);
 
@@ -113,7 +115,8 @@ public class SignInService {
       customer = createWithGooglePayload(token.getPayload());
     }
 
-    String customerToken = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId(), 0, "");
+    String customerToken = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId(), 0, new
+        ArrayList<>());
 
     SignInResult signInResult = new SignInResult(CustomerMapper.modelToView(customer),
         customerToken);

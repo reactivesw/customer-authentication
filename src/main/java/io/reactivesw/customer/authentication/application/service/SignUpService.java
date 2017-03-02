@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +50,7 @@ public class SignUpService {
 
     Customer customer = customerService.createWithEmail(email, password);
 
-    String token = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId(), 0, "");
+    String token = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId(), 0, new ArrayList<>());
 
     SignInResult signInResult = new SignInResult(CustomerMapper.modelToView(customer), token);
 
