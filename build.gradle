@@ -88,5 +88,5 @@ dependencies {
 apply from: 'code_analyzer_test_local/code_analyzer.gradle'
 apply from: 'code_analyzer_test_local/code_test_coverage.gradle'
 
-apply from: 'test_coverage.gradle'
+//apply from: 'test_coverage.gradle'
 mainClassName = 'io.reactivesw.customer.authentication.Application'

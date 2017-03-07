@@ -3,16 +3,21 @@ apply plugin: 'pmd'
 apply plugin: 'findbugs'
 
 // apply all configurations
-apply from:'code_analyzer_test/code_analyzer_config.gradle'
+apply from: 'code_analyzer_test/checkstyle.gradle'
+apply from: 'code_analyzer_test/findbugs.gradle'
+apply from: 'code_analyzer_test/pmd.gradle'
 
 /*************checkstyle(use google java style)***************/
 
-checkstyle{
-    //exclude the package you do not want to check
-    //checkstyleMain.exclude 'io/reactivesw/customerauthentication/grpc/*'
+checkstyle {
+    configFile = './code_analyzer_test/config/checkstyle/checkstyle.xml' as File
+}
+/*************PMD(Project Manager Design)***************/
+
+pmd {
+    ruleSetFiles = files("./code_analyzer_test/config/pmd/ruleset.xml")
 }
 
-/*************PMD(Project Manager Design)***************/
 tasks.withType(Pmd) {
     //exclude the package you do not want to check
     //exclude 'io/reactivesw/customerweb/Application.java'
