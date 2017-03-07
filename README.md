@@ -12,7 +12,7 @@ customer authentication service, provide: sign in, sign up, sign out, generate c
 ```Shell
  git clone https://github.com/reactivesw/customer-authentication.git
  cd customer-authentication
- ./gradlew clena build
+ ./gradlew clean build
 ```
 ## 2.2 Run
 - Use gradle
