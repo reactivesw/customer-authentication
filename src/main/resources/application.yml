@@ -25,3 +25,4 @@ io:
 
 jwt:
   secret: QWERTYUIOPASDFGHJKLZXCVBNM
+  expires: 72000
