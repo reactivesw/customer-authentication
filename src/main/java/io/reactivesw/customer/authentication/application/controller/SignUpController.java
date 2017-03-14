@@ -4,7 +4,7 @@ import io.reactivesw.customer.authentication.application.model.SignInResult;
 import io.reactivesw.customer.authentication.application.model.SignUp;
 import io.reactivesw.customer.authentication.application.service.SignUpService;
 import io.reactivesw.customer.authentication.infrastructure.Router;
-import io.swagger.annotations.ApiOperation;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,6 @@ public class SignUpController {
    * @param signUp SignUp model
    * @return
    */
-  @ApiOperation("sign up with email & password")
   @PostMapping(Router.AUTHENTICATION_SIGN_UP)
   public SignInResult signUpWithEmail(@RequestBody SignUp signUp) {
     LOG.info("enter: email:", signUp.getEmail());
