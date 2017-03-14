@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Configuration
-public class IndexController {
+public class HealthController {
 
   /**
    * service name.
@@ -23,7 +23,7 @@ public class IndexController {
    *
    * @return service name.
    */
-  @GetMapping("/")
+  @GetMapping("/health")
   public String index() {
     return serviceName + ", system time: " + System.currentTimeMillis();
   }

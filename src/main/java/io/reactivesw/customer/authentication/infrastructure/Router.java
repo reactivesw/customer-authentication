@@ -7,7 +7,7 @@ public class Router {
   /**
    * authentication root.
    */
-  public static final String AUTHENTICATION_ROOT = "/auth";
+  public static final String AUTHENTICATION_ROOT = "/";
 
   /**
    * login.
