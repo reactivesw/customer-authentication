@@ -12,21 +12,26 @@ public class Router {
   /**
    * login.
    */
-  public static final String AUTHENTICATION_SIGN_IN = AUTHENTICATION_ROOT + "/signin";
+  public static final String AUTHENTICATION_SIGN_IN = AUTHENTICATION_ROOT + "signin";
 
   /**
    * logout.
    */
-  public static final String AUTHENTICATION_SIGN_OUT = AUTHENTICATION_ROOT + "/signout";
+  public static final String AUTHENTICATION_SIGN_OUT = AUTHENTICATION_ROOT + "signout";
 
   /**
    * sign up.
    */
-  public static final String AUTHENTICATION_SIGN_UP = AUTHENTICATION_ROOT + "/signup";
+  public static final String AUTHENTICATION_SIGN_UP = AUTHENTICATION_ROOT + "signup";
 
   /**
    * sign up.
    */
-  public static final String AUTHENTICATION_ANONYMOUS = AUTHENTICATION_ROOT + "/anonymous";
+  public static final String AUTHENTICATION_ANONYMOUS = AUTHENTICATION_ROOT + "anonymous";
+
+  /**
+   * The constant AUTHENTICATION_HEALTH_CHECK.
+   */
+  public static final String AUTHENTICATION_HEALTH_CHECK = AUTHENTICATION_ROOT + "health";
 
 }

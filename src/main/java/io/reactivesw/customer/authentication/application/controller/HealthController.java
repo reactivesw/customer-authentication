@@ -1,15 +1,16 @@
 package io.reactivesw.customer.authentication.application.controller;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static io.reactivesw.customer.authentication.infrastructure.Router
+    .AUTHENTICATION_HEALTH_CHECK;
 
 /**
  * Created by umasuo on 17/2/21.
  */
 @RestController
-@Configuration
 public class HealthController {
 
   /**
@@ -23,7 +24,7 @@ public class HealthController {
    *
    * @return service name.
    */
-  @GetMapping("/health")
+  @GetMapping(AUTHENTICATION_HEALTH_CHECK)
   public String index() {
     return serviceName + ", system time: " + System.currentTimeMillis();
   }
