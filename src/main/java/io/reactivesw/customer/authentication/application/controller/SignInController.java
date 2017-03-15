@@ -6,12 +6,16 @@ import io.reactivesw.customer.authentication.application.service.SignInService;
 import io.reactivesw.customer.authentication.infrastructure.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by umasuo on 17/2/13.
@@ -27,6 +31,7 @@ public class SignInController {
   /**
    * sign in service.
    */
+  @Autowired
   private transient SignInService signInService;
 
 
@@ -36,13 +41,13 @@ public class SignInController {
    * @param signIn SignIn
    * @return SignInResult
    */
-  @PostMapping(value = Router.AUTHENTICATION_SIGN_IN, params = "email")
-  public SignInResult loginWithEmail(@RequestBody SignIn signIn) {
-    LOG.info("enter: email:", signIn.getEmail());
+  @PostMapping(value = Router.AUTHENTICATION_SIGN_IN)
+  public SignInResult signInWithEmail(@RequestBody @Valid SignIn signIn) {
+    LOG.info("Enter: signIn:", signIn);
 
     SignInResult result = signInService.signInWithEmail(signIn.getEmail(), signIn.getPassword());
 
-    LOG.info("exit: loginResult:", result);
+    LOG.info("Exit: SignInResult: {}", result);
     return result;
   }
 
@@ -52,14 +57,15 @@ public class SignInController {
    * @param gToken String
    * @return LoginResult
    */
-  @PostMapping(value = Router.AUTHENTICATION_SIGN_IN, params = "gToken")
-  public SignInResult loginWithGoogle(@RequestBody String gToken) throws GeneralSecurityException,
-      IOException {
-    LOG.info("enter: gToken: {}", gToken);
+  @PostMapping(value = Router.AUTHENTICATION_SIGN_IN_GOOGLE)
+  public SignInResult signInWithGoogle(@RequestBody @Valid @NotNull String gToken)
+      throws GeneralSecurityException, IOException {
+    LOG.info("Enter: gToken: {}", gToken);
 
     SignInResult result = signInService.signInWithGoogle(gToken);
 
-    LOG.info("exit: customer:");
+    LOG.info("Exit: SignInResult: {}", result);
     return result;
   }
+
 }

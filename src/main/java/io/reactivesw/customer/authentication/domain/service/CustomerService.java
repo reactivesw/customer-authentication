@@ -5,13 +5,11 @@ import io.reactivesw.customer.authentication.infrastructure.repository.CustomerR
 import io.reactivesw.customer.authentication.infrastructure.util.PasswordUtil;
 import io.reactivesw.exception.AlreadyExistException;
 import io.reactivesw.exception.NotExistException;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Locale;
+import org.springframework.util.Assert;
 
 /**
  * Created by umasuo on 17/2/10.
@@ -22,7 +20,7 @@ public class CustomerService {
   /**
    * logger.
    */
-  private final static Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
+  private final static Logger logger = LoggerFactory.getLogger(CustomerService.class);
 
   /**
    * customer repository.
@@ -37,13 +35,15 @@ public class CustomerService {
    * @return Customer
    */
   public Customer getById(String id) {
-    LOGGER.debug("enter: id:{}", id);
+    logger.debug("Enter: id: {}", id);
+
     Customer entity = this.customerRepository.findOne(id);
     if (entity == null) {
-      LOGGER.warn("customer not exist: id:{}", id);
-      throw new NotExistException("customer not exist. id:" + id);
+      logger.warn("customer not exist: id:{}", id);
+      throw new NotExistException("customer not exist. id: " + id);
     }
-    LOGGER.debug("exit: id:{}, customer:{}", id, entity);
+
+    logger.debug("Exit: id: {}, customer: {}", id, entity);
     return entity;
   }
 
@@ -54,14 +54,15 @@ public class CustomerService {
    * @return
    */
   public Customer getByEmail(String email) {
-    LOGGER.debug("enter: email:{}", email);
-    String lcEmail = email.toLowerCase(Locale.ENGLISH);
-    Customer entity = this.customerRepository.findOneByEmail(lcEmail);
+    logger.debug("Enter: email: {}", email);
+
+    Customer entity = this.customerRepository.findOneByEmail(email);
     if (entity == null) {
-      LOGGER.debug("customer not exist: email:{}", lcEmail);
-      throw new NotExistException("customer not exist. email:" + lcEmail);
+      logger.debug("customer not exist: email:{}", email);
+      throw new NotExistException("customer not exist. email:" + email);
     }
-    LOGGER.debug("exit: email:{}, customer:{}", email, entity);
+
+    logger.debug("Exit: customer:{}", email, entity);
     return entity;
   }
 
@@ -72,12 +73,9 @@ public class CustomerService {
    * @return Customer
    */
   public Customer getByExternalId(String externalId) {
-    LOGGER.debug("enter: externalId:{}", externalId);
+    logger.debug("Enter: externalId: {}", externalId);
 
-    Customer customer = this.customerRepository.findByExternalId(externalId);
-
-    LOGGER.debug("exit: externalId:{}, customer:{}", externalId, customer);
-    return customer;
+    return this.customerRepository.findByExternalId(externalId);
   }
 
   /**
@@ -88,11 +86,13 @@ public class CustomerService {
    * @return Customer
    */
   public Customer createWithEmail(String email, String password) {
+    logger.debug("Enter: email:{}", email);
 
-    this.checkEmail(email);
+    this.isCustomerExist(email);
     Customer entity = new Customer();
     entity.setEmail(email);
     entity.setPassword(PasswordUtil.hashPassword(password));
+
     return this.customerRepository.save(entity);
   }
 
@@ -104,7 +104,7 @@ public class CustomerService {
    * @return CustomerEntity
    */
   public Customer createWithSample(Customer customer) {
-    LOGGER.debug("external info: {}", customer);
+    logger.debug("Enter: sample: {}", customer);
     return this.customerRepository.save(customer);
   }
 
@@ -113,14 +113,14 @@ public class CustomerService {
    *
    * @param email
    */
-  private void checkEmail(String email) {
-    if (StringUtils.isNotBlank(email)) {
-      String tmmEmail = email.toLowerCase(Locale.ENGLISH);
-      Customer existValue = this.customerRepository.findOneByEmail(tmmEmail);
-      if (existValue != null) {
-        LOGGER.debug("error: customer already exist. email: {}", email);
-        throw new AlreadyExistException("Customer already exist. email: " + tmmEmail);
-      }
+  private void isCustomerExist(String email) {
+    logger.debug("Enter: email: {}", email);
+    Assert.notNull(email);
+
+    Customer existValue = this.customerRepository.findOneByEmail(email);
+    if (existValue != null) {
+      logger.warn("error: customer already exist. email: {}", email);
+      throw new AlreadyExistException("Customer already exist. email: " + email);
     }
   }
 }

@@ -13,6 +13,11 @@ public class Router {
    * login.
    */
   public static final String AUTHENTICATION_SIGN_IN = AUTHENTICATION_ROOT + "signin";
+  /**
+   * login.
+   */
+  public static final String AUTHENTICATION_SIGN_IN_GOOGLE = AUTHENTICATION_SIGN_IN +
+      "signin/google";
 
   /**
    * logout.
@@ -28,6 +33,11 @@ public class Router {
    * sign up.
    */
   public static final String AUTHENTICATION_ANONYMOUS = AUTHENTICATION_ROOT + "anonymous";
+
+  /**
+   * sign in status.
+   */
+  public static final String AUTHENTICATION_SIGN_IN_STATUS = AUTHENTICATION_ROOT + "status";
 
   /**
    * The constant AUTHENTICATION_HEALTH_CHECK.

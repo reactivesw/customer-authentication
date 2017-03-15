@@ -25,7 +25,7 @@ public class HealthController {
    * @return service name.
    */
   @GetMapping(AUTHENTICATION_HEALTH_CHECK)
-  public String index() {
+  public String health() {
     return serviceName + ", system time: " + System.currentTimeMillis();
   }
 }

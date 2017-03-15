@@ -8,20 +8,24 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import io.reactivesw.authentication.JwtUtil;
 import io.reactivesw.authentication.TokenType;
 import io.reactivesw.customer.authentication.application.model.SignInResult;
+import io.reactivesw.customer.authentication.application.model.SignInStatus;
 import io.reactivesw.customer.authentication.application.model.maper.CustomerMapper;
 import io.reactivesw.customer.authentication.domain.model.Customer;
 import io.reactivesw.customer.authentication.domain.service.CustomerService;
+import io.reactivesw.customer.authentication.infrastructure.configuration.AppConfig;
+import io.reactivesw.customer.authentication.infrastructure.configuration.GoogleConfig;
 import io.reactivesw.customer.authentication.infrastructure.util.PasswordUtil;
 import io.reactivesw.exception.ParametersException;
 import io.reactivesw.exception.PasswordErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.Collections;
 
 /**
@@ -33,14 +37,13 @@ public class SignInService {
   /**
    * logger.
    */
-  private final static Logger LOGGER = LoggerFactory.getLogger(SignInService.class);
+  private final static Logger logger = LoggerFactory.getLogger(SignInService.class);
 
   /**
    * JWT(json web token) update
    */
   @Autowired
   private transient JwtUtil jwtUtil;
-
 
   /**
    * HTTP TRANSPORT.
@@ -64,13 +67,27 @@ public class SignInService {
   private transient CustomerService customerService;
 
   /**
+   * google client config
+   */
+  private transient GoogleConfig googleConfig;
+
+  private transient AppConfig appConfig;
+
+
+  /**
+   * redis ops.
+   */
+  @Autowired
+  private transient RedisTemplate redisTemplate;
+
+  /**
    * default config.
    */
-  public SignInService() {
+  @Autowired
+  public SignInService(GoogleConfig googleConfig) {
+    this.googleConfig = googleConfig;
     this.verifier = new GoogleIdTokenVerifier.Builder(TRANSPORT, JSON_FACTORY)
-        //TODO use config
-        .setAudience(Collections.singletonList("131564184321-8o7d2rtmansr22v7hlubvjkqmqgkd08h" +
-            ".apps.googleusercontent.com"))
+        .setAudience(Collections.singletonList(googleConfig.getGoogleId()))
         .build();
   }
 
@@ -83,7 +100,7 @@ public class SignInService {
    * @return LoginResult
    */
   public SignInResult signInWithEmail(String email, String password) {
-    LOGGER.debug("enter: email: {}", email);
+    logger.debug("Enter: email: {}", email);
     Customer customer = customerService.getByEmail(email);
 
     Boolean pwdResult = PasswordUtil.checkPassword(password, customer.getPassword());
@@ -91,11 +108,13 @@ public class SignInService {
       throw new PasswordErrorException("password or email not correct.");
     }
 
-    String token = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId(), 0, new ArrayList<>
-        ());
+    String token = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId());
 
     SignInResult result = new SignInResult(CustomerMapper.modelToView(customer), token);
 
+    cacheSignInStatus(result);
+
+    logger.debug("Enter: email: {}", email);
     return result;
   }
 
@@ -107,7 +126,8 @@ public class SignInService {
    */
   public SignInResult signInWithGoogle(String gToken) throws GeneralSecurityException,
       IOException {
-    LOGGER.debug("enter: gToken: {}", gToken);
+    logger.debug("Enter: gToken: {}", gToken);
+
     GoogleIdToken token = verifyToken(gToken);
     String googleId = token.getPayload().getSubject();
     Customer customer = customerService.getByExternalId(googleId);
@@ -115,14 +135,15 @@ public class SignInService {
       customer = createWithGooglePayload(token.getPayload());
     }
 
-    String customerToken = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId(), 0, new
-        ArrayList<>());
+    String customerToken = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId());
 
-    SignInResult signInResult = new SignInResult(CustomerMapper.modelToView(customer),
+    SignInResult result = new SignInResult(CustomerMapper.modelToView(customer),
         customerToken);
 
-    LOGGER.debug("exit: customer: {}", customer);
-    return signInResult;
+    cacheSignInStatus(result);
+
+    logger.debug("Exit: customer: {}", customer);
+    return result;
   }
 
   /**
@@ -134,16 +155,16 @@ public class SignInService {
    * @throws IOException
    */
   private GoogleIdToken verifyToken(String token) throws GeneralSecurityException, IOException {
-    LOGGER.debug("enter: gToken: {}", token);
+    logger.debug("Enter: gToken: {}", token);
 
     GoogleIdToken idToken = verifier.verify(token);
 
     if (idToken == null) {
-      LOGGER.debug(" google token verify failed: gToken: {}", token);
+      logger.debug("google token verify failed. gToken: {}", token);
       throw new ParametersException("Google's id token is not correct.");
     }
 
-    LOGGER.debug("exist: googleIdToken: {}", idToken);
+    logger.debug("Exit: googleIdToken: {}", idToken);
     return idToken;
   }
 
@@ -157,10 +178,47 @@ public class SignInService {
     Customer customer = new Customer();
     String id = payload.getSubject();
 
-    //TODO should we save the email?
     customer.setExternalId(id);
 
-    LOGGER.debug("create new customer with external info. customerEntity: {}", customer);
+    logger.debug("create new customer with external info. customerEntity: {}", customer);
     return customerService.createWithSample(customer);
+  }
+
+
+  protected void setJwtUtil(JwtUtil jwtUtil) {
+    this.jwtUtil = jwtUtil;
+  }
+
+  protected void setCustomerService(CustomerService customerService) {
+    this.customerService = customerService;
+  }
+
+  protected void setAppConfig(AppConfig appConfig) {
+    this.appConfig = appConfig;
+  }
+
+  protected void setRedisTemplate(RedisTemplate redisTemplate) {
+    this.redisTemplate = redisTemplate;
+  }
+
+  /**
+   * Cache Sign in result.
+   *
+   * @param signInResult sign in result.
+   */
+  private void cacheSignInStatus(SignInResult signInResult) {
+    logger.debug("Enter: SignInResult: {}", signInResult);
+    Assert.notNull(signInResult);
+    Assert.notNull(signInResult.getToken());
+
+    String customerId = signInResult.getCustomerView().getId();
+    String mapKey = StatusService.AUTH_KEY + customerId;
+    String fieldKey = jwtUtil.parseToken(signInResult.getToken()).getTokenId();
+
+    long curTime = System.currentTimeMillis();
+    SignInStatus signInStatus = new SignInStatus(curTime, curTime, appConfig.expiresIn);
+    redisTemplate.boundHashOps(mapKey).put(fieldKey, signInStatus);
+
+    logger.debug("Exit: SignInStatus: {}", signInStatus);
   }
 }
