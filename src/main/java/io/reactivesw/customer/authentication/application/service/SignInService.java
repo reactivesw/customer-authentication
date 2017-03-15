@@ -71,6 +71,7 @@ public class SignInService {
    */
   private transient GoogleConfig googleConfig;
 
+  @Autowired
   private transient AppConfig appConfig;
 
 
