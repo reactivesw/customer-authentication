@@ -25,6 +25,8 @@ items:
             value: jdbc:postgresql://pg-data/customer_authentication
           - name: spring_cloud_config_uri
             value: http://reactivesw-config
+          - name: spring_redis_host
+            value: redis
           - name: jwt_secret
             valueFrom:
               secretKeyRef:
