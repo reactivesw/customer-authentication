@@ -6,11 +6,16 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * Created by umasuo on 17/3/15.
+ * sign in status.
  */
 @Data
 @AllArgsConstructor
 public class SignInStatus implements Serializable {
+
+  /**
+   * auto generated serial version id.
+   */
+  private static final long serialVersionUID = -3600640015597918768L;
 
   /**
    * sign in time.

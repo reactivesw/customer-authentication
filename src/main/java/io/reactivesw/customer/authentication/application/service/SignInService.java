@@ -29,15 +29,15 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 
 /**
- * Created by umasuo on 17/2/10.
+ * sign in service.
  */
 @Service
 public class SignInService {
 
   /**
-   * logger.
+   * LOG.
    */
-  private final static Logger logger = LoggerFactory.getLogger(SignInService.class);
+  private final static Logger LOG = LoggerFactory.getLogger(SignInService.class);
 
   /**
    * JWT(json web token) update
@@ -67,10 +67,8 @@ public class SignInService {
   private transient CustomerService customerService;
 
   /**
-   * google client config
+   *
    */
-  private transient GoogleConfig googleConfig;
-
   @Autowired
   private transient AppConfig appConfig;
 
@@ -86,7 +84,6 @@ public class SignInService {
    */
   @Autowired
   public SignInService(GoogleConfig googleConfig) {
-    this.googleConfig = googleConfig;
     this.verifier = new GoogleIdTokenVerifier.Builder(TRANSPORT, JSON_FACTORY)
         .setAudience(Collections.singletonList(googleConfig.getGoogleId()))
         .build();
@@ -101,7 +98,7 @@ public class SignInService {
    * @return LoginResult
    */
   public SignInResult signInWithEmail(String email, String password) {
-    logger.debug("Enter: email: {}", email);
+    LOG.debug("Enter: email: {}", email);
     Customer customer = customerService.getByEmail(email);
 
     Boolean pwdResult = PasswordUtil.checkPassword(password, customer.getPassword());
@@ -115,7 +112,7 @@ public class SignInService {
 
     cacheSignInStatus(result);
 
-    logger.debug("Enter: email: {}", email);
+    LOG.debug("Enter: email: {}", email);
     return result;
   }
 
@@ -127,7 +124,7 @@ public class SignInService {
    */
   public SignInResult signInWithGoogle(String gToken) throws GeneralSecurityException,
       IOException {
-    logger.debug("Enter: gToken: {}", gToken);
+    LOG.debug("Enter: gToken: {}", gToken);
 
     GoogleIdToken token = verifyToken(gToken);
     String googleId = token.getPayload().getSubject();
@@ -143,7 +140,7 @@ public class SignInService {
 
     cacheSignInStatus(result);
 
-    logger.debug("Exit: customer: {}", customer);
+    LOG.debug("Exit: customer: {}", customer);
     return result;
   }
 
@@ -156,16 +153,16 @@ public class SignInService {
    * @throws IOException
    */
   private GoogleIdToken verifyToken(String token) throws GeneralSecurityException, IOException {
-    logger.debug("Enter: gToken: {}", token);
+    LOG.debug("Enter: gToken: {}", token);
 
     GoogleIdToken idToken = verifier.verify(token);
 
     if (idToken == null) {
-      logger.debug("google token verify failed. gToken: {}", token);
+      LOG.debug("google token verify failed. gToken: {}", token);
       throw new ParametersException("Google's id token is not correct.");
     }
 
-    logger.debug("Exit: googleIdToken: {}", idToken);
+    LOG.debug("Exit: googleIdToken: {}", idToken);
     return idToken;
   }
 
@@ -181,23 +178,42 @@ public class SignInService {
 
     customer.setExternalId(id);
 
-    logger.debug("create new customer with external info. customerEntity: {}", customer);
+    LOG.debug("create new customer with external info. customerEntity: {}", customer);
     return customerService.createWithSample(customer);
   }
 
-
+  /**
+   * set jet util.
+   *
+   * @param jwtUtil
+   */
   protected void setJwtUtil(JwtUtil jwtUtil) {
     this.jwtUtil = jwtUtil;
   }
 
+  /**
+   * set customer service.
+   *
+   * @param customerService
+   */
   protected void setCustomerService(CustomerService customerService) {
     this.customerService = customerService;
   }
 
+  /**
+   * set app config.
+   *
+   * @param appConfig
+   */
   protected void setAppConfig(AppConfig appConfig) {
     this.appConfig = appConfig;
   }
 
+  /**
+   * set redis template.
+   *
+   * @param redisTemplate
+   */
   protected void setRedisTemplate(RedisTemplate redisTemplate) {
     this.redisTemplate = redisTemplate;
   }
@@ -208,9 +224,9 @@ public class SignInService {
    * @param signInResult sign in result.
    */
   private void cacheSignInStatus(SignInResult signInResult) {
-    logger.debug("Enter: SignInResult: {}", signInResult);
-    Assert.notNull(signInResult);
-    Assert.notNull(signInResult.getToken());
+    LOG.debug("enter. SignInResult: {}", signInResult);
+    Assert.notNull(signInResult, "signInResult can not be null.");
+    Assert.notNull(signInResult.getToken(), "token can not be null.");
 
     String customerId = signInResult.getCustomerView().getId();
     String mapKey = StatusService.AUTH_KEY + customerId;
@@ -220,6 +236,6 @@ public class SignInService {
     SignInStatus signInStatus = new SignInStatus(curTime, curTime, appConfig.expiresIn);
     redisTemplate.boundHashOps(mapKey).put(fieldKey, signInStatus);
 
-    logger.debug("Exit: SignInStatus: {}", signInStatus);
+    LOG.debug("exit. SignInStatus: {}", signInStatus);
   }
 }

@@ -16,11 +16,10 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 /**
- * Created by umasuo on 17/2/10.
+ * customer entity.
  */
 @Getter
 @Setter
@@ -30,6 +29,9 @@ import javax.persistence.Version;
 @EntityListeners(AuditingEntityListener.class)
 public class Customer {
 
+  /**
+   * uuid.
+   */
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")

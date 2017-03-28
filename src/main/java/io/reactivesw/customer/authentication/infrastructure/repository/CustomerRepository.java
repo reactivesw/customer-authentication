@@ -6,13 +6,25 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Created by umasuo on 17/2/10.
+ * customer repository.
  */
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, String>,
     CrudRepository<Customer, String> {
 
+  /**
+   * find customer by email.
+   *
+   * @param email
+   * @return
+   */
   Customer findOneByEmail(String email);
 
+  /**
+   * find customer by external id.
+   *
+   * @param externalId
+   * @return
+   */
   Customer findByExternalId(String externalId);
 }

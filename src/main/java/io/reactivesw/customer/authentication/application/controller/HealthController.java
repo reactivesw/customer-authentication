@@ -8,7 +8,7 @@ import static io.reactivesw.customer.authentication.infrastructure.Router
     .AUTHENTICATION_HEALTH_CHECK;
 
 /**
- * Created by umasuo on 17/2/21.
+ * health api.
  */
 @RestController
 public class HealthController {
@@ -17,7 +17,7 @@ public class HealthController {
    * service name.
    */
   @Value("${spring.application.name}")
-  private String serviceName;
+  private transient String serviceName;
 
   /**
    * this api is used for health check.

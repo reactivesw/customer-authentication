@@ -11,13 +11,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import java.util.Arrays;
 
-// TODO: 16/12/16 add for CORS, if somethings wrong, should remove
+/**
+ * for cors.
+ */
 @Configuration
 public class CorsConfiguration {
   /**
-   * Cors configurer web mvc configurer.
+   * Cors configure web mvc configure.
    *
-   * @return the web mvc configurer
+   * @return the web mvc configure¬
    */
   @Bean
   public WebMvcConfigurer corsConfigurer() {

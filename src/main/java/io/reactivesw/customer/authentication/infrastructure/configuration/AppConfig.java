@@ -4,15 +4,16 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.Serializable;
-
 /**
- * Created by umasuo on 17/3/15.
+ * app config.
  */
 @Configuration
 @Data
-public class AppConfig implements Serializable{
+public class AppConfig {
 
+  /**
+   * token expires time.
+   */
   @Value("${customer.authentication.expires:7200000}")
   public long expiresIn;
 }

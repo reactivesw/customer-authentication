@@ -10,7 +10,7 @@ checkstyle{
     /*source = fileTree('src')*/
     toolVersion='6.15'
 
-    ignoreFailures = false
+//    ignoreFailures = false
 
     sourceSets = [sourceSets.main]
 

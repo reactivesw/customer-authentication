@@ -16,10 +16,13 @@ import org.springframework.stereotype.Service;
 public class StatusService {
 
   /**
-   * logger.
+   * LOG.
    */
-  private final static Logger logger = LoggerFactory.getLogger(StatusService.class);
+  private final static Logger LOG = LoggerFactory.getLogger(StatusService.class);
 
+  /**
+   * auth cache key.
+   */
   public final static String AUTH_KEY = "customer:auth:";
   /**
    * redis ops. cache cluster should be used.
@@ -41,14 +44,14 @@ public class StatusService {
    * @return String userId
    */
   public String checkSignInStatus(String tokenString) {
-    logger.debug("Enter: tokenString: {}", tokenString);
+    LOG.debug("Enter: tokenString: {}", tokenString);
     Token token = jwtUtil.parseToken(tokenString);
     String customerId = token.getSubjectId();
     String mapKey = AUTH_KEY + customerId;
     String fieldKey = token.getTokenId();
 
     SignInStatus signInStatus = (SignInStatus) redisTemplate.boundHashOps(mapKey).get(fieldKey);
-    logger.debug("SignInStatus: {}", signInStatus);
+    LOG.debug("SignInStatus: {}", signInStatus);
 
     String result = null;
     if (signInStatus != null) {
@@ -63,23 +66,23 @@ public class StatusService {
       }
     }
 
-    logger.debug("Exit: customerId: {}", result);
+    LOG.debug("Exit: customerId: {}", result);
     return result;
   }
 
   /**
-   * for each time the user visit any service, we update the last visit time of his/her sign in
+   * for each time the user visit any service, we update the last visit time build his/her sign in
    * status.
    */
   private void updateSignInStatus(String mapKey, String fieldKey, SignInStatus signInStatus) {
-    logger.debug("Enter: mapKey: {}, fieldKey: {}, signInStatus: {}", mapKey, fieldKey,
+    LOG.debug("Enter: mapKey: {}, fieldKey: {}, signInStatus: {}", mapKey, fieldKey,
         signInStatus);
 
     signInStatus.setLastVisitTime(System.currentTimeMillis());
 
     redisTemplate.boundHashOps(mapKey).put(fieldKey, signInStatus);
 
-    logger.debug("Enter: mapKey: {}, fieldKey: {}, signInStatus: {}", mapKey, fieldKey,
+    LOG.debug("Enter: mapKey: {}, fieldKey: {}, signInStatus: {}", mapKey, fieldKey,
         signInStatus);
   }
 }

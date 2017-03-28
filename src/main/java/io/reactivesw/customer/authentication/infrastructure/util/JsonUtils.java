@@ -12,78 +12,125 @@ import java.io.IOException;
 /**
  * JsonUtils for serialize or deserialize mode.
  */
-public class JsonUtils {
+public final class JsonUtils {
 
 
-  private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
-  private static final ObjectMapper objectMapper = new ObjectMapper();
+  /**
+   * logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(JsonUtils.class);
+  /**
+   * Object mapper.
+   */
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-  public static <T> T deserialize(String string, Class<T> clazz) {
-    if (StringUtils.isBlank(string)) {
+  /**
+   * default private constructor.
+   */
+  private JsonUtils() {
+
+  }
+
+  /**
+   * deserialize object.
+   *
+   * @param value
+   * @param clazz
+   * @param <T>
+   * @return
+   */
+  public static <T> T deserialize(String value, Class<T> clazz) {
+    if (StringUtils.isBlank(value)) {
       throw new IllegalArgumentException(
           "Blank string cannot be deserialized to class");
     }
 
     try {
-      T t = objectMapper.readValue(string, clazz);
-      return t;
-    } catch (IOException e) {
-      logger.error(
-          "Error deserializing string: " + string, e);
+      return OBJECT_MAPPER.readValue(value, clazz);
+    } catch (IOException ex) {
+      LOG.debug("Error deserializing string: {}", value, ex);
       throw new IllegalArgumentException(
-          "Error deserializing string: " + string, e);
+          "Error deserializing string: " + value, ex);
     }
   }
 
-  public static <T> T deserialize(String string, TypeReference<T> typeReference) {
-    if (StringUtils.isBlank(string)) {
+  /**
+   * deserialize object.
+   *
+   * @param stringValue
+   * @param typeReference
+   * @param <T>
+   * @return
+   */
+  public static <T> T deserialize(String stringValue, TypeReference<T> typeReference) {
+    if (StringUtils.isBlank(stringValue)) {
       throw new IllegalArgumentException(
           "Blank string cannot be deserialized to class");
     }
 
     try {
-      T t = objectMapper.readValue(string, typeReference);
-      return t;
-    } catch (IOException e) {
-      logger.error(
-          "Error deserializing string: " + string, e);
-      throw new IllegalArgumentException(
-          "Error deserializing string: " + string, e);
+      return OBJECT_MAPPER.readValue(stringValue, typeReference);
+    } catch (IOException ex) {
+      LOG.debug("Error deserializing string: {}", stringValue, ex);
+      throw new IllegalArgumentException(stringValue, ex);
     }
   }
 
+  /**
+   * serialize object.
+   *
+   * @param obj
+   * @return
+   */
   public static String serialize(Object obj) {
     if (obj == null) {
       throw new IllegalArgumentException("Null Object cannot be serialized");
     }
 
     try {
-      return objectMapper.writeValueAsString(obj);
+      return OBJECT_MAPPER.writeValueAsString(obj);
     } catch (JsonProcessingException e) {
-      logger.error("Error serializing object", e);
+      LOG.debug("Error serializing object", e);
       throw new IllegalArgumentException("Error serializing object: " + e.getMessage());
     }
   }
 
+  /**
+   * valid json string.
+   *
+   * @param string
+   * @return
+   */
   public static boolean isJSONValid(String string) {
+    boolean result = false;
     try {
-      objectMapper.readTree(string);
-      return true;
+      OBJECT_MAPPER.readTree(string);
+      result = true;
     } catch (IOException e) {
-      return false;
+      result = false;
     }
+    return result;
   }
 
-  public static <T> boolean isJSONValid(String string, Class<T> clazz) {
-    if (StringUtils.isBlank(string)) {
-      return false;
+  /**
+   * valid json string with class type.
+   *
+   * @param value
+   * @param clazz
+   * @param <T>
+   * @return
+   */
+  public static <T> boolean isJSONValid(String value, Class<T> clazz) {
+    boolean result = false;
+    if (!StringUtils.isBlank(value)) {
+      try {
+        OBJECT_MAPPER.readValue(value, clazz);
+        result = true;
+      } catch (IOException e) {
+        // do nothing
+        LOG.debug("string is not valid json. string: {}", value);
+      }
     }
-
-    try {
-      objectMapper.readValue(string, clazz);
-      return true;
-    } catch (IOException e) {
-      return false;
-    }
+    return result;
   }
 }
