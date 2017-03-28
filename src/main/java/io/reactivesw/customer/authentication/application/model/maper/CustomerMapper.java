@@ -4,9 +4,16 @@ import io.reactivesw.customer.authentication.application.model.CustomerView;
 import io.reactivesw.customer.authentication.domain.model.Customer;
 
 /**
- * Created by umasuo on 17/2/10.
+ * customer mapper.
  */
-public class CustomerMapper {
+public final class CustomerMapper {
+
+  /**
+   * default private constructor.
+   */
+  private CustomerMapper() {
+
+  }
 
   /**
    * model model to model for view.

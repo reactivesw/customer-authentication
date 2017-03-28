@@ -1,7 +1,5 @@
 package io.reactivesw.customer.authentication.application.model;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 
 import java.io.Serializable;
@@ -10,12 +8,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
- * Created by umasuo on 17/2/10.
  * sign up model.
  */
-@Getter
-@Setter
 public class SignIn implements Serializable {
+
+  /**
+   * auto generated serial id.
+   */
+  private static final long serialVersionUID = 690172155668126335L;
 
   /**
    * email.
@@ -25,12 +25,12 @@ public class SignIn implements Serializable {
   private String email;
 
   /**
-   * ^                 # start-of-string
+   * ^                 # start-build-string
    * (?=.*[0-9])       # a digit must occur at least once
    * (?=.*[a-z])       # a lower case letter must occur at least once
    * (?=\S+$)          # no whitespace allowed in the entire string
    * .{8,}             # anything, at least eight places though
-   * $                 # end-of-string
+   * $                 # end-build-string
    */
   @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$")
   @NotNull
@@ -46,5 +46,41 @@ public class SignIn implements Serializable {
     return "SignIn{"
         + "email='" + email + '\''
         + '}';
+  }
+
+  /**
+   * get email.
+   *
+   * @return
+   */
+  public String getEmail() {
+    return email;
+  }
+
+  /**
+   * set email.
+   *
+   * @param email
+   */
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  /**
+   * get password.
+   *
+   * @return
+   */
+  public String getPassword() {
+    return password;
+  }
+
+  /**
+   * set password.
+   *
+   * @param password
+   */
+  public void setPassword(String password) {
+    this.password = password;
   }
 }

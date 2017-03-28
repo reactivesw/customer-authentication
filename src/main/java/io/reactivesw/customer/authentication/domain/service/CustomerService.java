@@ -12,15 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 /**
- * Created by umasuo on 17/2/10.
+ * customer service.
  */
 @Service
 public class CustomerService {
 
   /**
-   * logger.
+   * LOG.
    */
-  private final static Logger logger = LoggerFactory.getLogger(CustomerService.class);
+  private final static Logger LOG = LoggerFactory.getLogger(CustomerService.class);
 
   /**
    * customer repository.
@@ -35,15 +35,15 @@ public class CustomerService {
    * @return Customer
    */
   public Customer getById(String id) {
-    logger.debug("Enter: id: {}", id);
+    LOG.debug("Enter: id: {}", id);
 
     Customer entity = this.customerRepository.findOne(id);
     if (entity == null) {
-      logger.warn("customer not exist: id:{}", id);
+      LOG.warn("customer not exist: id:{}", id);
       throw new NotExistException("customer not exist. id: " + id);
     }
 
-    logger.debug("Exit: id: {}, customer: {}", id, entity);
+    LOG.debug("Exit: id: {}, customer: {}", id, entity);
     return entity;
   }
 
@@ -54,15 +54,15 @@ public class CustomerService {
    * @return
    */
   public Customer getByEmail(String email) {
-    logger.debug("Enter: email: {}", email);
+    LOG.debug("Enter: email: {}", email);
 
     Customer entity = this.customerRepository.findOneByEmail(email);
     if (entity == null) {
-      logger.debug("customer not exist: email:{}", email);
+      LOG.debug("customer not exist: email:{}", email);
       throw new NotExistException("customer not exist. email:" + email);
     }
 
-    logger.debug("Exit: customer:{}", email, entity);
+    LOG.debug("Exit: customer:{}", email, entity);
     return entity;
   }
 
@@ -73,7 +73,7 @@ public class CustomerService {
    * @return Customer
    */
   public Customer getByExternalId(String externalId) {
-    logger.debug("Enter: externalId: {}", externalId);
+    LOG.debug("Enter: externalId: {}", externalId);
 
     return this.customerRepository.findByExternalId(externalId);
   }
@@ -86,7 +86,7 @@ public class CustomerService {
    * @return Customer
    */
   public Customer createWithEmail(String email, String password) {
-    logger.debug("Enter: email:{}", email);
+    LOG.debug("Enter: email:{}", email);
 
     this.isCustomerExist(email);
     Customer entity = new Customer();
@@ -104,7 +104,7 @@ public class CustomerService {
    * @return CustomerEntity
    */
   public Customer createWithSample(Customer customer) {
-    logger.debug("Enter: sample: {}", customer);
+    LOG.debug("Enter: sample: {}", customer);
     return this.customerRepository.save(customer);
   }
 
@@ -114,12 +114,12 @@ public class CustomerService {
    * @param email
    */
   private void isCustomerExist(String email) {
-    logger.debug("Enter: email: {}", email);
-    Assert.notNull(email);
+    LOG.debug("Enter: email: {}", email);
+    Assert.notNull(email, "email can not be null.");
 
     Customer existValue = this.customerRepository.findOneByEmail(email);
     if (existValue != null) {
-      logger.warn("error: customer already exist. email: {}", email);
+      LOG.warn("error: customer already exist. email: {}", email);
       throw new AlreadyExistException("Customer already exist. email: " + email);
     }
   }

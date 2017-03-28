@@ -13,14 +13,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by umasuo on 17/3/7.
+ * status api.
  */
 @RestController
 public class StatusController {
   /**
-   * logger.
+   * LOG.
    */
-  private final static Logger logger = LoggerFactory.getLogger(StatusController.class);
+  private final static Logger LOG = LoggerFactory.getLogger(StatusController.class);
 
   /**
    * status service.
@@ -37,11 +37,11 @@ public class StatusController {
    */
   @GetMapping(value = Router.AUTHENTICATION_SIGN_IN_STATUS)
   public String getSignInStatus(@RequestParam @Valid @NotNull String token) {
-    logger.info("Enter: token: {}", token);
+    LOG.info("Enter: token: {}", token);
 
     String customerId = statusService.checkSignInStatus(token);
 
-    logger.info("Exit: token: {}, customerId: {}", token, customerId);
+    LOG.info("Exit: token: {}, customerId: {}", token, customerId);
     return customerId;
   }
 }

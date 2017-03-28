@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by umasuo on 17/2/10.
+ * Sign up service.
  */
 @Service
 public class SignUpService {
@@ -20,7 +20,7 @@ public class SignUpService {
   /**
    * logger.
    */
-  private final static Logger LOGGER = LoggerFactory.getLogger(SignUpService.class);
+  private final static Logger LOG = LoggerFactory.getLogger(SignUpService.class);
 
   /**
    * customer service.
@@ -35,14 +35,14 @@ public class SignUpService {
   private transient JwtUtil jwtUtil;
 
   /**
-   * signup with email.
+   * sign up with email.
    *
    * @param email    email
    * @param password password
    * @return Customer
    */
   public SignInResult signUpWithEmail(String email, String password) {
-    LOGGER.debug("Enter: email: {}", email);
+    LOG.debug("Enter: email: {}", email);
 
     Customer customer = customerService.createWithEmail(email, password);
 
@@ -50,14 +50,24 @@ public class SignUpService {
 
     SignInResult signInResult = new SignInResult(CustomerMapper.modelToView(customer), token);
 
-    LOGGER.debug("Exit: SignInResult: {}", signInResult);
+    LOG.debug("Exit: SignInResult: {}", signInResult);
     return signInResult;
   }
 
+  /**
+   * set customer service.
+   *
+   * @param customerService
+   */
   protected void setCustomerService(CustomerService customerService) {
     this.customerService = customerService;
   }
 
+  /**
+   * set jet util.
+   *
+   * @param jwtUtil
+   */
   protected void setJwtUtil(JwtUtil jwtUtil) {
     this.jwtUtil = jwtUtil;
   }
