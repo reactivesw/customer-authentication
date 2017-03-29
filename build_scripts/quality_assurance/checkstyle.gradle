@@ -1,16 +1,9 @@
 apply plugin: 'checkstyle'
 
-/*************checkstyle(use google java style)***************/
-checkstyle {
-    //exclude the package you do not want to check
-//    checkstyleMain.exclude '**/util/**'
-}
-
 checkstyle{
-    /*source = fileTree('src')*/
     toolVersion='6.15'
 
-//    ignoreFailures = false
+    ignoreFailures = false
 
     sourceSets = [sourceSets.main]
 
