@@ -94,4 +94,4 @@ TODO
   |-|-|-|
   | token | String | required |
 
-* response : String
+* response : customerId in String

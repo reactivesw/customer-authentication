@@ -2,6 +2,7 @@ package io.reactivesw.customer.authentication.infrastructure.exception;
 
 import io.reactivesw.customer.authentication.infrastructure.util.JsonUtils;
 import io.reactivesw.exception.AlreadyExistException;
+import io.reactivesw.exception.InvalidTokenException;
 import io.reactivesw.exception.NotExistException;
 import io.reactivesw.exception.PasswordErrorException;
 import io.reactivesw.exception.handler.ExceptionHandler;
@@ -79,6 +80,10 @@ public class AuthExceptionHandler extends ExceptionHandler implements HandlerExc
     if (ex instanceof PasswordErrorException) {
       body = ExceptionBody.build(ExceptionBody.EMAIL_OR_PASSWORD_ERROR_CODE, ExceptionBody
           .EMAIL_OR_PASSWORD_ERROR_MESSAGE);
+    }
+    if (ex instanceof InvalidTokenException) {
+      body = ExceptionBody.build(ExceptionBody.INVALID_TOKEN_CODE, ExceptionBody
+          .INVALID_TOKEN_MESSAGE);
     }
     return body;
   }

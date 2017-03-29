@@ -45,6 +45,7 @@ public class StatusService {
    */
   public String checkSignInStatus(String tokenString) {
     LOG.debug("Enter: tokenString: {}", tokenString);
+
     Token token = jwtUtil.parseToken(tokenString);
     String customerId = token.getSubjectId();
     String mapKey = AUTH_KEY + customerId;

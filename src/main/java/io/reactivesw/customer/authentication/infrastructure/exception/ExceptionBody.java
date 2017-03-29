@@ -35,6 +35,15 @@ public class ExceptionBody {
   public static final String EMAIL_OR_PASSWORD_ERROR_MESSAGE = "email or password not correct.";
 
   /**
+   * password error code.
+   */
+  public static final int INVALID_TOKEN_CODE = 10004;
+  /**
+   * password error message.
+   */
+  public static final String INVALID_TOKEN_MESSAGE = "token is invalid.";
+
+  /**
    * CODE.
    */
   private int code;
