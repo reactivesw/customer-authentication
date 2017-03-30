@@ -95,3 +95,30 @@ TODO
   | token | String | required |
 
 * response : customerId in String
+
+### Update customer
+
+* Url : {customer-authentication service path}/{customerId}
+* method : PUT
+- Payload: customerId --NotNull in path, UpdateRequest --NotNull in body
+- Response: CustomerView
+
+### Actions
+#### UpdatePassword
+- name: updatePassword
+Used to change password of the customer.
+```java
+  /**
+   * old password.
+   */
+  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$")
+  @NotNull
+  private String oldPassword;
+
+  /**
+   * new password.
+   */
+  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$")
+  @NotNull
+  private String newPassword;
+```
