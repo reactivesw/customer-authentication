@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by umasuo on 17/2/13.
+ * sign in controller.
  */
 @RestController
 public class SignInController {

@@ -2,14 +2,20 @@ package io.reactivesw.customer.authentication.domain.service;
 
 import io.reactivesw.customer.authentication.domain.model.Customer;
 import io.reactivesw.customer.authentication.infrastructure.repository.CustomerRepository;
+import io.reactivesw.customer.authentication.infrastructure.update.UpdateAction;
+import io.reactivesw.customer.authentication.infrastructure.update.UpdaterService;
 import io.reactivesw.customer.authentication.infrastructure.util.PasswordUtil;
 import io.reactivesw.exception.AlreadyExistException;
+import io.reactivesw.exception.ConflictException;
 import io.reactivesw.exception.NotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * customer service.
@@ -29,6 +35,12 @@ public class CustomerService {
   private transient CustomerRepository customerRepository;
 
   /**
+   * update service.
+   */
+  @Autowired
+  private transient UpdaterService updaterService;
+
+  /**
    * get customer by id.
    *
    * @param id String
@@ -46,6 +58,7 @@ public class CustomerService {
     LOG.debug("Exit: id: {}, customer: {}", id, entity);
     return entity;
   }
+
 
   /**
    * get customer by customer name.
@@ -109,6 +122,26 @@ public class CustomerService {
   }
 
   /**
+   * update customer.
+   *
+   * @param customerId customer id
+   * @param version    integer version
+   * @param actions    list of update action
+   * @return Customer
+   */
+  public Customer update(String customerId, Integer version, List<UpdateAction> actions) {
+    LOG.debug("enter. customerId: {}", customerId);
+    Customer customer = this.getById(customerId);
+
+    this.validateVersion(version, customer.getVersion());
+    actions.stream().forEach(
+        action -> updaterService.handle(customer, action)
+    );
+
+    return this.customerRepository.save(customer);
+  }
+
+  /**
    * check if the mail is unique.
    *
    * @param email
@@ -121,6 +154,20 @@ public class CustomerService {
     if (existValue != null) {
       LOG.warn("error: customer already exist. email: {}", email);
       throw new AlreadyExistException("Customer already exist. email: " + email);
+    }
+  }
+
+  /**
+   * check the version of the customer.
+   *
+   * @param inputVersion Integer
+   * @param savedVersion Integer
+   */
+  private void validateVersion(Integer inputVersion, Integer savedVersion) {
+    if (!Objects.equals(inputVersion, savedVersion)) {
+      LOG.debug("Customer version is not correct. inputVersion:{}, savedVersion:{}",
+          inputVersion, savedVersion);
+      throw new ConflictException("Customer version is not correct.");
     }
   }
 }

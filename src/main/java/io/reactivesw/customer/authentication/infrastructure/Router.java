@@ -1,7 +1,7 @@
 package io.reactivesw.customer.authentication.infrastructure;
 
 /**
- * Created by umasuo on 17/2/10.
+ * customer auth router.
  */
 public class Router {
   /**
@@ -38,6 +38,16 @@ public class Router {
    * sign in status.
    */
   public static final String AUTHENTICATION_SIGN_IN_STATUS = AUTHENTICATION_ROOT + "status";
+
+  /**
+   * customer id.
+   */
+  public static final String CUSTOMER_ID = "customerId";
+
+  /**
+   * updater.
+   */
+  public static final String CUSTOMER_WITH_ID = AUTHENTICATION_ROOT + "{" + CUSTOMER_ID + "}";
 
   /**
    * The constant AUTHENTICATION_HEALTH_CHECK.
