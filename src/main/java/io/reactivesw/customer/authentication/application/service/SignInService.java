@@ -7,6 +7,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import io.reactivesw.authentication.JwtUtil;
 import io.reactivesw.authentication.TokenType;
+import io.reactivesw.customer.authentication.application.model.FbSignInRequest;
 import io.reactivesw.customer.authentication.application.model.SignInResult;
 import io.reactivesw.customer.authentication.application.model.SignInStatus;
 import io.reactivesw.customer.authentication.application.model.maper.CustomerMapper;
@@ -128,10 +129,7 @@ public class SignInService {
 
     GoogleIdToken token = verifyToken(gToken);
     String googleId = token.getPayload().getSubject();
-    Customer customer = customerService.getByExternalId(googleId);
-    if (customer == null) {
-      customer = createWithGooglePayload(token.getPayload());
-    }
+    Customer customer = customerService.getOrCreateWithExternalId(googleId);
 
     String customerToken = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId());
 
@@ -145,6 +143,27 @@ public class SignInService {
   }
 
   /**
+   * sign in with
+   *
+   * @param request auth response get from facebook by front end.
+   * @return sign in result.
+   */
+  public SignInResult signInWithFacebook(FbSignInRequest request) {
+    LOG.debug("enter. response from facebook: {}", request);
+    //TODO Verify access token
+    Customer customer = customerService.getOrCreateWithExternalId(request.getUserID());
+    String customerToken = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId());
+
+    SignInResult result = new SignInResult(CustomerMapper.modelToView(customer),
+        customerToken);
+
+    cacheSignInStatus(result);
+
+    LOG.debug("exit. customer: {}", customer);
+    return result;
+  }
+
+  /**
    * verify google token.
    *
    * @param token String
@@ -153,34 +172,18 @@ public class SignInService {
    * @throws IOException
    */
   private GoogleIdToken verifyToken(String token) throws GeneralSecurityException, IOException {
-    LOG.debug("Enter: gToken: {}", token);
+    LOG.debug("enter. gToken: {}", token);
 
-    GoogleIdToken idToken = verifier.verify(token);
-
-    if (idToken == null) {
+    try {
+      GoogleIdToken idToken = verifier.verify(token);
+      LOG.debug("exit. googleIdToken: {}", idToken);
+      return idToken;
+    } catch (GeneralSecurityException | IOException ex) {
       LOG.debug("google token verify failed. gToken: {}", token);
       throw new ParametersException("Google's id token is not correct.");
     }
-
-    LOG.debug("Exit: googleIdToken: {}", idToken);
-    return idToken;
   }
 
-  /**
-   * create new customer with google payload.
-   *
-   * @param payload GoogleIdToken.Payload
-   * @return CustomerEntity
-   */
-  private Customer createWithGooglePayload(GoogleIdToken.Payload payload) {
-    Customer customer = new Customer();
-    String id = payload.getSubject();
-
-    customer.setExternalId(id);
-
-    LOG.debug("create new customer with external info. customerEntity: {}", customer);
-    return customerService.createWithSample(customer);
-  }
 
   /**
    * set jet util.

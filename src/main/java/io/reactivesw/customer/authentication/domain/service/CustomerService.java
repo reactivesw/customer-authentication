@@ -47,7 +47,7 @@ public class CustomerService {
    * @return Customer
    */
   public Customer getById(String id) {
-    LOG.debug("Enter: id: {}", id);
+    LOG.debug("enter. id: {}", id);
 
     Customer entity = this.customerRepository.findOne(id);
     if (entity == null) {
@@ -55,7 +55,7 @@ public class CustomerService {
       throw new NotExistException("customer not exist. id: " + id);
     }
 
-    LOG.debug("Exit: id: {}, customer: {}", id, entity);
+    LOG.debug("exit. id: {}, customer: {}", id, entity);
     return entity;
   }
 
@@ -67,15 +67,15 @@ public class CustomerService {
    * @return
    */
   public Customer getByEmail(String email) {
-    LOG.debug("Enter: email: {}", email);
+    LOG.debug("enter. email: {}", email);
 
-    Customer entity = this.customerRepository.findOneByEmail(email);
+    Customer entity = customerRepository.findOneByEmail(email);
     if (entity == null) {
       LOG.debug("customer not exist: email:{}", email);
       throw new NotExistException("customer not exist. email:" + email);
     }
 
-    LOG.debug("Exit: customer:{}", email, entity);
+    LOG.debug("exit. customer:{}", email, entity);
     return entity;
   }
 
@@ -85,10 +85,27 @@ public class CustomerService {
    * @param externalId String
    * @return Customer
    */
-  public Customer getByExternalId(String externalId) {
-    LOG.debug("Enter: externalId: {}", externalId);
+  public Customer getOrCreateWithExternalId(String externalId) {
+    LOG.debug("enter. externalId: {}", externalId);
+    Customer customer = customerRepository.findByExternalId(externalId);
+    if (customer == null) {
+      customer = createWithExternalId(externalId);
+    }
+    return customer;
+  }
 
-    return this.customerRepository.findByExternalId(externalId);
+  /**
+   * create new customer with google payload.
+   *
+   * @param externalId GoogleIdToken.Payload
+   * @return CustomerEntity
+   */
+  private Customer createWithExternalId(String externalId) {
+    Customer customer = new Customer();
+    customer.setExternalId(externalId);
+
+    LOG.debug("create new customer with external info. customerEntity: {}", customer);
+    return customerRepository.save(customer);
   }
 
   /**
