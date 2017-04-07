@@ -172,17 +172,16 @@ public class SignInService {
    * @throws IOException
    */
   private GoogleIdToken verifyToken(String token) throws GeneralSecurityException, IOException {
-    LOG.debug("Enter: gToken: {}", token);
+    LOG.debug("enter. gToken: {}", token);
 
-    GoogleIdToken idToken = verifier.verify(token);
-
-    if (idToken == null) {
+    try {
+      GoogleIdToken idToken = verifier.verify(token);
+      LOG.debug("exit. googleIdToken: {}", idToken);
+      return idToken;
+    } catch (GeneralSecurityException | IOException ex) {
       LOG.debug("google token verify failed. gToken: {}", token);
       throw new ParametersException("Google's id token is not correct.");
     }
-
-    LOG.debug("Exit: googleIdToken: {}", idToken);
-    return idToken;
   }
 
 
