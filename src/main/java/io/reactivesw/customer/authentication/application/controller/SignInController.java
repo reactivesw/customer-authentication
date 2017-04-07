@@ -1,5 +1,6 @@
 package io.reactivesw.customer.authentication.application.controller;
 
+import io.reactivesw.customer.authentication.application.model.FbSignInRequest;
 import io.reactivesw.customer.authentication.application.model.SignIn;
 import io.reactivesw.customer.authentication.application.model.SignInResult;
 import io.reactivesw.customer.authentication.application.service.SignInService;
@@ -43,11 +44,11 @@ public class SignInController {
    */
   @PostMapping(value = Router.AUTHENTICATION_SIGN_IN)
   public SignInResult signInWithEmail(@RequestBody @Valid SignIn signIn) {
-    LOG.info("Enter: signIn:", signIn);
+    LOG.info("enter. signIn: {}", signIn);
 
     SignInResult result = signInService.signInWithEmail(signIn.getEmail(), signIn.getPassword());
 
-    LOG.info("Exit: SignInResult: {}", result);
+    LOG.info("exit: SignInResult: {}", result);
     return result;
   }
 
@@ -60,11 +61,28 @@ public class SignInController {
   @PostMapping(value = Router.AUTHENTICATION_SIGN_IN_GOOGLE)
   public SignInResult signInWithGoogle(@RequestBody @Valid @NotNull String gToken)
       throws GeneralSecurityException, IOException {
-    LOG.info("Enter: gToken: {}", gToken);
+    LOG.info("enter. gToken: {}", gToken);
 
     SignInResult result = signInService.signInWithGoogle(gToken);
 
-    LOG.info("Exit: SignInResult: {}", result);
+    LOG.info("exit. SignInResult: {}", result);
+    return result;
+  }
+
+  /**
+   * login with facebook.
+   *
+   * @param request FbSignInRequest
+   * @return LoginResult
+   */
+  @PostMapping(value = Router.AUTHENTICATION_SIGN_IN_FB)
+  public SignInResult signInWithFB(@RequestBody @Valid @NotNull FbSignInRequest request)
+      throws GeneralSecurityException, IOException {
+    LOG.info("enter. fbToken: {}", request);
+
+    SignInResult result = signInService.signInWithFacebook(request);
+
+    LOG.info("exit. SignInResult: {}", result);
     return result;
   }
 

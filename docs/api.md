@@ -32,6 +32,15 @@ TODO
 | externalId | String | |
 | source | String | |
 
+### FbSignInRequest
+
+| field name | field type | comments |
+|-|-|-|
+| accessToken | String | not null|
+| expiresIn | long | not null |
+| signedRequest | String | not null|
+| userID | String | not null|
+
 ### SignUp
 
 | field name | field type | comments |
@@ -69,6 +78,18 @@ TODO
   | name | type | required |
   |-|-|-|
   | gToken | String | require |
+
+* response : SignInResult
+
+### sign in with facebook
+
+* Url : {customer-authentication service path}/signin/facebook
+* method : POST
+* request param :
+
+  | name | type | required |
+  |-|-|-|
+  | request | FbSignInRequest | require |
 
 * response : SignInResult
 

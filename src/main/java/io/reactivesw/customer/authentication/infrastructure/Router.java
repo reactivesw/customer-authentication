@@ -13,11 +13,18 @@ public class Router {
    * login.
    */
   public static final String AUTHENTICATION_SIGN_IN = AUTHENTICATION_ROOT + "signin";
+
   /**
    * login.
    */
   public static final String AUTHENTICATION_SIGN_IN_GOOGLE = AUTHENTICATION_SIGN_IN +
       "signin/google";
+
+  /**
+   * login.
+   */
+  public static final String AUTHENTICATION_SIGN_IN_FB = AUTHENTICATION_SIGN_IN +
+      "signin/facebook";
 
   /**
    * logout.
