@@ -1,6 +1,7 @@
 package io.reactivesw.customer.authentication.domain.service;
 
 import io.reactivesw.customer.authentication.domain.model.Customer;
+import io.reactivesw.customer.authentication.infrastructure.enums.AccountSource;
 import io.reactivesw.customer.authentication.infrastructure.repository.CustomerRepository;
 import io.reactivesw.customer.authentication.infrastructure.update.UpdateAction;
 import io.reactivesw.customer.authentication.infrastructure.update.UpdaterService;
@@ -85,11 +86,11 @@ public class CustomerService {
    * @param externalId String
    * @return Customer
    */
-  public Customer getOrCreateWithExternalId(String externalId) {
+  public Customer getOrCreateWithExternalId(String externalId, AccountSource source) {
     LOG.debug("enter. externalId: {}", externalId);
     Customer customer = customerRepository.findByExternalId(externalId);
     if (customer == null) {
-      customer = createWithExternalId(externalId);
+      customer = createWithExternalId(externalId, source);
     }
     return customer;
   }
@@ -100,9 +101,10 @@ public class CustomerService {
    * @param externalId GoogleIdToken.Payload
    * @return CustomerEntity
    */
-  private Customer createWithExternalId(String externalId) {
+  private Customer createWithExternalId(String externalId, AccountSource source) {
     Customer customer = new Customer();
     customer.setExternalId(externalId);
+    customer.setSource(source.getValue());
 
     LOG.debug("create new customer with external info. customerEntity: {}", customer);
     return customerRepository.save(customer);
