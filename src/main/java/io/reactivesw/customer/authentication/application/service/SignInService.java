@@ -85,6 +85,7 @@ public class SignInService {
    */
   @Autowired
   public SignInService(GoogleConfig googleConfig) {
+    LOG.debug("googleConfig: {}", googleConfig);
     this.verifier = new GoogleIdTokenVerifier.Builder(TRANSPORT, JSON_FACTORY)
         .setAudience(Collections.singletonList(googleConfig.getGoogleId()))
         .build();
@@ -176,7 +177,12 @@ public class SignInService {
 
     try {
       GoogleIdToken idToken = verifier.verify(token);
+
       LOG.debug("exit. googleIdToken: {}", idToken);
+      if (idToken == null) {
+        // the idToken will be null when the token expired or the key not correct
+        throw new ParametersException("Google's id token is not correct.");
+      }
       return idToken;
     } catch (GeneralSecurityException | IOException ex) {
       LOG.debug("google token verify failed. gToken: {}", token);
