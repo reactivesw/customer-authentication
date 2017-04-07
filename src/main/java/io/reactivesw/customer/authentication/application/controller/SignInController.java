@@ -1,6 +1,7 @@
 package io.reactivesw.customer.authentication.application.controller;
 
 import io.reactivesw.customer.authentication.application.model.FbSignInRequest;
+import io.reactivesw.customer.authentication.application.model.GoogleSignInRequest;
 import io.reactivesw.customer.authentication.application.model.SignIn;
 import io.reactivesw.customer.authentication.application.model.SignInResult;
 import io.reactivesw.customer.authentication.application.service.SignInService;
@@ -55,15 +56,15 @@ public class SignInController {
   /**
    * login with google.
    *
-   * @param gToken String
+   * @param request String
    * @return LoginResult
    */
   @PostMapping(value = Router.AUTHENTICATION_SIGN_IN_GOOGLE)
-  public SignInResult signInWithGoogle(@RequestBody @Valid @NotNull String gToken)
+  public SignInResult signInWithGoogle(@RequestBody @Valid @NotNull GoogleSignInRequest request)
       throws GeneralSecurityException, IOException {
-    LOG.info("enter. gToken: {}", gToken);
+    LOG.info("enter. request: {}", request);
 
-    SignInResult result = signInService.signInWithGoogle(gToken);
+    SignInResult result = signInService.signInWithGoogle(request.getToken());
 
     LOG.info("exit. SignInResult: {}", result);
     return result;

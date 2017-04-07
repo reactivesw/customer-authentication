@@ -32,6 +32,12 @@ TODO
 | externalId | String | |
 | source | String | |
 
+### GoogleSignInRequest
+
+| field name | field type | comments |
+|-|-|-|
+| token | String | not null|
+
 ### FbSignInRequest
 
 | field name | field type | comments |
@@ -77,7 +83,7 @@ TODO
 
   | name | type | required |
   |-|-|-|
-  | gToken | String | require |
+  | request | GoogleSignInRequest | require |
 
 * response : SignInResult
 
