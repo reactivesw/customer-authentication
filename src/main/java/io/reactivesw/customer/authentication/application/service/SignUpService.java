@@ -6,6 +6,7 @@ import io.reactivesw.customer.authentication.application.model.SignInResult;
 import io.reactivesw.customer.authentication.application.model.maper.CustomerMapper;
 import io.reactivesw.customer.authentication.domain.model.Customer;
 import io.reactivesw.customer.authentication.domain.service.CustomerService;
+import io.reactivesw.customer.authentication.infrastructure.enums.AccountSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class SignUpService {
     LOG.debug("Enter: email: {}", email);
 
     Customer customer = customerService.createWithEmail(email, password);
+    customer.setSource(AccountSource.EMAIL.getValue());
 
     String token = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId());
 

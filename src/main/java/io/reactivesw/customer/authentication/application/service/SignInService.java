@@ -15,6 +15,7 @@ import io.reactivesw.customer.authentication.domain.model.Customer;
 import io.reactivesw.customer.authentication.domain.service.CustomerService;
 import io.reactivesw.customer.authentication.infrastructure.configuration.AppConfig;
 import io.reactivesw.customer.authentication.infrastructure.configuration.GoogleConfig;
+import io.reactivesw.customer.authentication.infrastructure.enums.AccountSource;
 import io.reactivesw.customer.authentication.infrastructure.util.PasswordUtil;
 import io.reactivesw.exception.ParametersException;
 import io.reactivesw.exception.PasswordErrorException;
@@ -130,7 +131,7 @@ public class SignInService {
 
     GoogleIdToken token = verifyToken(gToken);
     String googleId = token.getPayload().getSubject();
-    Customer customer = customerService.getOrCreateWithExternalId(googleId);
+    Customer customer = customerService.getOrCreateWithExternalId(googleId, AccountSource.GOOGLE);
 
     String customerToken = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId());
 
@@ -152,7 +153,8 @@ public class SignInService {
   public SignInResult signInWithFacebook(FbSignInRequest request) {
     LOG.debug("enter. response from facebook: {}", request);
     //TODO Verify access token
-    Customer customer = customerService.getOrCreateWithExternalId(request.getUserID());
+    Customer customer = customerService.getOrCreateWithExternalId(request.getUserID(),
+        AccountSource.FACEBOOK);
     String customerToken = jwtUtil.generateToken(TokenType.CUSTOMER, customer.getId());
 
     SignInResult result = new SignInResult(CustomerMapper.modelToView(customer),
