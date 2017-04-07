@@ -125,7 +125,7 @@ public class SignInService {
    */
   public SignInResult signInWithGoogle(String gToken) throws GeneralSecurityException,
       IOException {
-    LOG.debug("Enter: gToken: {}", gToken);
+    LOG.debug("enter. gToken: {}", gToken);
 
     GoogleIdToken token = verifyToken(gToken);
     String googleId = token.getPayload().getSubject();
@@ -138,7 +138,7 @@ public class SignInService {
 
     cacheSignInStatus(result);
 
-    LOG.debug("Exit: customer: {}", customer);
+    LOG.debug("exit. customer: {}", customer);
     return result;
   }
 

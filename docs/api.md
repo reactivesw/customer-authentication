@@ -73,7 +73,7 @@ TODO
 
 * Url : {customer-authentication service path}/signin/google
 * method : POST
-* request param :
+* request body :
 
   | name | type | required |
   |-|-|-|
@@ -85,7 +85,7 @@ TODO
 
 * Url : {customer-authentication service path}/signin/facebook
 * method : POST
-* request param :
+* request body :
 
   | name | type | required |
   |-|-|-|
