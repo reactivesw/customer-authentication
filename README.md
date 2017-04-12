@@ -39,7 +39,7 @@ java -jar build/libs/customer-authentication-{jar-version}.jar
 - All customer id will be generate here.
 
 # 4. Design
-![image](./doc/resource/auth-work-flow.png)
+![image](./docs/resource/auth-work-flow.png)
 
 # 5. Dependency
 This project depend on config service, but you can still run it dependently by add all the configs need to application.yml.
