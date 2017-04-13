@@ -30,10 +30,10 @@ public class AnonymousController {
    */
   @GetMapping(value = Router.AUTHENTICATION_ANONYMOUS)
   public String getAnonymousToken() {
-    LOG.info("enter.");
+    LOG.info("Enter.");
     String token = jwtUtil.generateAnonymousToken();
 
-    LOG.info("exit. token: {}.", token);
+    LOG.info("Exit. Token: {}.", token);
     return token;
   }
 
