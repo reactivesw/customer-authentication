@@ -44,7 +44,7 @@ public class SignInController {
    * @return SignInResult
    */
   @PostMapping(value = Router.AUTHENTICATION_SIGN_IN)
-  public SignInResult signInWithEmail(@RequestBody @Valid SignIn signIn) {
+  public SignInResult signInWithEmail(@RequestBody @Valid SignIn signIn) throws IOException {
     LOG.info("enter. signIn: {}", signIn);
 
     SignInResult result = signInService.signInWithEmail(signIn.getEmail(), signIn.getPassword());

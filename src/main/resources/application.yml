@@ -17,11 +17,12 @@ spring:
 io:
   reactivesw:
     message:
+      broker:
+        host: http://umasuo.com
       brokerType: google
-      topic: my-new-topic
       google:
         project:
-          id: basic-radius-158809
+          id: reactivesw-project
 
 jwt:
   secret: QWERTYUIOPASDFGHJKLZXCVBNM
