@@ -47,7 +47,8 @@ public class SignInController {
   public SignInResult signInWithEmail(@RequestBody @Valid SignIn signIn) throws IOException {
     LOG.info("enter. signIn: {}", signIn);
 
-    SignInResult result = signInService.signInWithEmail(signIn.getEmail(), signIn.getPassword());
+    SignInResult result = signInService.signInWithEmail(signIn.getEmail(), signIn.getPassword(),
+        signIn.getAnonymousId());
 
     LOG.info("exit: SignInResult: {}", result);
     return result;
@@ -64,7 +65,8 @@ public class SignInController {
       throws GeneralSecurityException, IOException {
     LOG.info("enter. request: {}", request);
 
-    SignInResult result = signInService.signInWithGoogle(request.getToken());
+    SignInResult result = signInService.signInWithGoogle(request.getToken(), request
+        .getAnonymousId());
 
     LOG.info("exit. SignInResult: {}", result);
     return result;

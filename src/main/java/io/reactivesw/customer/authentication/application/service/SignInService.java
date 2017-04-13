@@ -10,12 +10,16 @@ import io.reactivesw.authentication.TokenType;
 import io.reactivesw.customer.authentication.application.model.FbSignInRequest;
 import io.reactivesw.customer.authentication.application.model.SignInResult;
 import io.reactivesw.customer.authentication.application.model.SignInStatus;
+import io.reactivesw.customer.authentication.application.model.event.SignInEvent;
 import io.reactivesw.customer.authentication.application.model.maper.CustomerMapper;
+import io.reactivesw.customer.authentication.application.model.maper.EventMessageMapper;
 import io.reactivesw.customer.authentication.domain.model.Customer;
+import io.reactivesw.customer.authentication.domain.model.EventMessage;
 import io.reactivesw.customer.authentication.domain.service.CustomerService;
 import io.reactivesw.customer.authentication.infrastructure.configuration.AppConfig;
 import io.reactivesw.customer.authentication.infrastructure.configuration.GoogleConfig;
 import io.reactivesw.customer.authentication.infrastructure.enums.AccountSource;
+import io.reactivesw.customer.authentication.infrastructure.repository.EventRepository;
 import io.reactivesw.customer.authentication.infrastructure.util.PasswordUtil;
 import io.reactivesw.exception.ParametersException;
 import io.reactivesw.exception.PasswordErrorException;
@@ -69,6 +73,12 @@ public class SignInService {
   private transient CustomerService customerService;
 
   /**
+   * event repository.
+   */
+  @Autowired
+  private transient EventRepository eventRepository;
+
+  /**
    *
    */
   @Autowired
@@ -100,7 +110,7 @@ public class SignInService {
    * @param password String
    * @return LoginResult
    */
-  public SignInResult signInWithEmail(String email, String password) {
+  public SignInResult signInWithEmail(String email, String password, String anonymousId) {
     LOG.debug("Enter: email: {}", email);
     Customer customer = customerService.getByEmail(email);
 
@@ -114,6 +124,7 @@ public class SignInService {
     SignInResult result = new SignInResult(CustomerMapper.modelToView(customer), token);
 
     cacheSignInStatus(result);
+    saveSignInEvent(anonymousId, result);
 
     LOG.debug("Enter: email: {}", email);
     return result;
@@ -125,8 +136,8 @@ public class SignInService {
    * @param gToken String
    * @return LoginResult
    */
-  public SignInResult signInWithGoogle(String gToken) throws GeneralSecurityException,
-      IOException {
+  public SignInResult signInWithGoogle(String gToken, String anonymousId)
+      throws GeneralSecurityException, IOException {
     LOG.debug("enter. gToken: {}", gToken);
 
     GoogleIdToken token = verifyToken(gToken);
@@ -139,6 +150,7 @@ public class SignInService {
         customerToken);
 
     cacheSignInStatus(result);
+    saveSignInEvent(anonymousId, result);
 
     LOG.debug("exit. customer: {}", customer);
     return result;
@@ -161,9 +173,28 @@ public class SignInService {
         customerToken);
 
     cacheSignInStatus(result);
+    saveSignInEvent(request.getAnonymousId(), result);
 
     LOG.debug("exit. customer: {}", customer);
     return result;
+  }
+
+  /**
+   * save sign in event to db.
+   *
+   * @param anonymousId
+   * @param signInResult
+   */
+  public void saveSignInEvent(String anonymousId, SignInResult signInResult) {
+    String customerId = signInResult.getCustomerView().getId();
+    LOG.debug("enter. anonymousId: {}, customerId: {}.", anonymousId, customerId);
+
+    SignInEvent event = new SignInEvent(customerId, anonymousId);
+    EventMessage message = EventMessageMapper.toEntity(event);
+    EventMessage savedMsg = eventRepository.save(message);
+
+    LOG.debug("exit. anonymousId: {}, customerId: {}, event: {}.", anonymousId, customerId,
+        savedMsg);
   }
 
   /**

@@ -33,4 +33,9 @@ public class FbSignInRequest {
    */
   @NotNull
   private String userID;
+
+  /**
+   * anonymous id if exist.
+   */
+  private String anonymousId;
 }
