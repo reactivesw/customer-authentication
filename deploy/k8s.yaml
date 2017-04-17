@@ -4,6 +4,7 @@ items:
 - kind: Deployment
   apiVersion: extensions/v1beta1
   metadata:
+    namespace: dev
     name: customer-authentication
   spec:
     replicas: 1
@@ -36,6 +37,7 @@ items:
   apiVersion: v1
   metadata:
     name: customer-authentication
+    namespace: dev
     labels:
       name: customer-authentication
   spec:
@@ -43,7 +45,7 @@ items:
     ports:
     - port: 80
       targetPort: 80
-      nodePort: 30004
+      nodePort: 30104
     selector:
       name: customer-authentication
 
