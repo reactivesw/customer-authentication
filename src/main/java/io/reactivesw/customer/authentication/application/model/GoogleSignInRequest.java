@@ -16,4 +16,9 @@ public class GoogleSignInRequest {
   @NotNull
   private String token;
 
+  /**
+   * anonymous id if exist.
+   */
+  private String anonymousId;
+
 }

@@ -5,18 +5,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * google config.
+ * event config.
  */
 @Configuration
 @Data
-public class GoogleConfig {
+public class EventConfig {
 
   /**
-   * google client id.
+   * google cloud project id.
    */
-  @Value("${google.client.id:131564184321-8o7d2rtmansr22v7hlubvjkqmqgkd08h.apps.googleusercontent" +
-      ".com}")
-  private String googleId;
-
-
+  @Value("${io.reactivesw.message.google.project.id}")
+  private String googleCloudProjectId;
 }

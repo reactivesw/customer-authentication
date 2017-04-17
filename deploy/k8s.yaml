@@ -6,6 +6,7 @@ items:
   metadata:
     namespace: dev
     name: customer-authentication
+    namespace: dev
   spec:
     replicas: 1
     template:
@@ -15,7 +16,7 @@ items:
       spec:
         containers:
         - name: customer-authentication
-          image: reactivesw/customer-authentication:0.0.2
+          image: reactivesw/customer-authentication:0.0.4-beta
           imagePullPolicy: Always
           ports:
           - containerPort: 80

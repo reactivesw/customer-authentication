@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by umasuo on 17/2/15.
+ * anonymous controller.
  */
 @RestController
 public class AnonymousController {
@@ -26,14 +26,14 @@ public class AnonymousController {
   private transient JwtUtil jwtUtil;
 
   /**
-   * login with facebook.
+   * get anonymous token.
    */
   @GetMapping(value = Router.AUTHENTICATION_ANONYMOUS)
   public String getAnonymousToken() {
-    LOG.info("Enter GetAnonymousToken");
+    LOG.info("Enter.");
     String token = jwtUtil.generateAnonymousToken();
 
-    LOG.info("Exit GetAnonymousToken: token: {}", token);
+    LOG.info("Exit. Token: {}.", token);
     return token;
   }
 

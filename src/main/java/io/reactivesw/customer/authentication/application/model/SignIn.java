@@ -37,6 +37,11 @@ public class SignIn implements Serializable {
   private String password;
 
   /**
+   * anonymous id if exist.
+   */
+  private String anonymousId;
+
+  /**
    * override to string method, do not serialize password.
    *
    * @return
@@ -82,5 +87,23 @@ public class SignIn implements Serializable {
    */
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  /**
+   * get anonymousId
+   *
+   * @return String
+   */
+  public String getAnonymousId() {
+    return anonymousId;
+  }
+
+  /**
+   * set anonymous id.
+   *
+   * @param anonymousId String
+   */
+  public void setAnonymousId(String anonymousId) {
+    this.anonymousId = anonymousId;
   }
 }
