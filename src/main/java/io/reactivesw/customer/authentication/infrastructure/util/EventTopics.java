@@ -8,5 +8,5 @@ public final class EventTopics {
   /**
    * sign in.
    */
-  public static final String SIGN_IN = "reactivesw-customer-signin";
+  public static final String SIGN_IN = "reactivesw-customer-login";
 }
