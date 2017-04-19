@@ -16,7 +16,7 @@ items:
       spec:
         containers:
         - name: customer-authentication
-          image: reactivesw/customer-authentication:0.0.4-beta
+          image: reactivesw/customer-authentication:0.0.4-dev
           imagePullPolicy: Always
           ports:
           - containerPort: 80
