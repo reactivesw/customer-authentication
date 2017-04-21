@@ -1,6 +1,5 @@
 package io.reactivesw.customer.authentication.application.model;
 
-import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
@@ -10,7 +9,6 @@ import javax.validation.constraints.Pattern;
  * Created by umasuo on 17/2/10.
  * sign up model.
  */
-@Data
 public class SignUp {
 
   /**
@@ -34,4 +32,52 @@ public class SignUp {
   @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$")
   @NotNull
   private String password;
+
+  /**
+   * Get email.
+   *
+   * @return String
+   */
+  public String getEmail() {
+    return email;
+  }
+
+  /**
+   * Set email.
+   *
+   * @param email email
+   */
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  /**
+   * Get password.
+   *
+   * @return String
+   */
+  public String getPassword() {
+    return password;
+  }
+
+  /**
+   * Set password.
+   *
+   * @param password String
+   */
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  /**
+   * To string.
+   *
+   * @return
+   */
+  @Override
+  public String toString() {
+    return "SignUp{"
+        + "email='" + email + '\''
+        + '}';
+  }
 }
