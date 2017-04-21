@@ -76,6 +76,7 @@ public class EventPublisher {
               event.getCreatedAt(), event.getVersion(), event.getExpire(), event.getPayload());
 
           publishEvent(event.getTopic(), message);
+          eventRepository.delete(event.getId());
         }
     );
   }
