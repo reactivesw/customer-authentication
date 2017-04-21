@@ -87,7 +87,7 @@ public class EventPublisher {
    * @param message   event
    */
   private void publishEvent(String topicName, Message message) {
-
+    LOG.info("Publish message. topicName: {}, message: {}.", topicName, message);
     Producer producer = producerMap.get(topicName);
     if (producer == null) {
       // The topic may be deleted or changed name.
