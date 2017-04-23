@@ -4,7 +4,6 @@ import io.reactivesw.customer.authentication.domain.model.EventMessage;
 import io.reactivesw.customer.authentication.infrastructure.configuration.EventConfig;
 import io.reactivesw.customer.authentication.infrastructure.enums.EventStatus;
 import io.reactivesw.customer.authentication.infrastructure.repository.EventRepository;
-import io.reactivesw.customer.authentication.infrastructure.util.EventTopics;
 import io.reactivesw.message.client.core.DefaultProducerFactory;
 import io.reactivesw.message.client.core.Message;
 import io.reactivesw.message.client.producer.Producer;
@@ -56,9 +55,9 @@ public class EventPublisher {
   @Autowired
   public EventPublisher(EventConfig eventConfig) {
     Producer signinProducer = DefaultProducerFactory.createGoogleProducer(
-        eventConfig.getGoogleCloudProjectId(), EventTopics.SIGN_IN);
+        eventConfig.getGoogleCloudProjectId(), eventConfig.getSignInTopicName());
 
-    producerMap.put(EventTopics.SIGN_IN, signinProducer);
+    producerMap.put(eventConfig.getSignInTopicName(), signinProducer);
   }
 
   /**
