@@ -17,6 +17,7 @@ import io.reactivesw.customer.authentication.domain.model.Customer;
 import io.reactivesw.customer.authentication.domain.model.EventMessage;
 import io.reactivesw.customer.authentication.domain.service.CustomerService;
 import io.reactivesw.customer.authentication.infrastructure.configuration.AppConfig;
+import io.reactivesw.customer.authentication.infrastructure.configuration.EventConfig;
 import io.reactivesw.customer.authentication.infrastructure.configuration.GoogleConfig;
 import io.reactivesw.customer.authentication.infrastructure.enums.AccountSource;
 import io.reactivesw.customer.authentication.infrastructure.repository.EventRepository;
@@ -79,10 +80,16 @@ public class SignInService {
   private transient EventRepository eventRepository;
 
   /**
-   *
+   * App config.
    */
   @Autowired
   private transient AppConfig appConfig;
+
+  /**
+   * Event config.
+   */
+  @Autowired
+  private transient EventConfig eventConfig;
 
 
   /**
@@ -190,7 +197,7 @@ public class SignInService {
     LOG.debug("enter. anonymousId: {}, customerId: {}.", anonymousId, customerId);
 
     SignInEvent event = new SignInEvent(customerId, anonymousId);
-    EventMessage message = EventMessageMapper.toEntity(event);
+    EventMessage message = EventMessageMapper.toEntity(event, eventConfig);
     EventMessage savedMsg = eventRepository.save(message);
 
     LOG.debug("exit. anonymousId: {}, customerId: {}, event: {}.", anonymousId, customerId,

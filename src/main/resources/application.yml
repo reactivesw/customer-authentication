@@ -20,6 +20,10 @@ io:
       broker:
         host: http://umasuo.com
       brokerType: google
+      topic:
+        signin:
+          name: reactivesw-customer-login
+          version: 1
       google:
         project:
           id: reactivesw-project
