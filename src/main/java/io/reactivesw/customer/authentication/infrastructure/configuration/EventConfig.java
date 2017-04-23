@@ -26,6 +26,6 @@ public class EventConfig {
   /**
    * Sign in topic message version.
    */
-  @Value("${io.reactivesw.message.topic.signin.name}")
+  @Value("${io.reactivesw.message.topic.signin.version}")
   private Integer signInTopicVersion;
 }

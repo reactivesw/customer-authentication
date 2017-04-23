@@ -29,6 +29,10 @@ items:
             value: http://reactivesw-config
           - name: spring_redis_host
             value: redis
+          - name: io_reactivesw_message_topic_signin_name
+            value: reactivesw-dev-customer-login
+          - name: io_reactivesw_message_topic_signin_version
+            value: "1"
           - name: jwt_secret
             valueFrom:
               secretKeyRef:

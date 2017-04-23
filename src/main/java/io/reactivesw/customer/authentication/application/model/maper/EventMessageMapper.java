@@ -34,7 +34,7 @@ public final class EventMessageMapper {
 
     eventMessage.setStatus(EventStatus.CREATED);
     eventMessage.setCreatedAt(System.currentTimeMillis());
-    eventMessage.setVersion(config.getSignInTopicVersion());//TODO use config
+    eventMessage.setVersion(config.getSignInTopicVersion());
     eventMessage.setTopic(config.getSignInTopicName());
 
     eventMessage.setPayload(jsonSerializer.serialize(event));
