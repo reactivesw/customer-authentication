@@ -12,6 +12,7 @@ TODO
 |-|-|-|
 | email | String | NotNull, email pattern |
 | password | String | NotNull, a digit must occur at least once, a lower case letter must occur at least once,  no whitespace allowed in the entire string, at least eight places, end of string |
+| anonymousId| String | anonymousId if exist
 
 ### SignInResult
 
@@ -37,6 +38,7 @@ TODO
 | field name | field type | comments |
 |-|-|-|
 | token | String | not null|
+| anonymousId| String | anonymousId if exist
 
 ### FbSignInRequest
 
@@ -46,6 +48,7 @@ TODO
 | expiresIn | long | not null |
 | signedRequest | String | not null|
 | userID | String | not null|
+| anonymousId| String | anonymousId if exist
 
 ### SignUp
 
